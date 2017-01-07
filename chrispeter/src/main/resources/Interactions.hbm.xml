@@ -1,0 +1,17 @@
+<hibernate-mapping>
+	<class name="readingProject.Interactions" table="INTERACTIONS">
+		<composite-id name="id" class="readingProject.Books_Users_Id">
+			<key-many-to-one name="books" class="readingProject.Books_collection" column="BOOK_ID" />
+			<key-many-to-one name="users" class="readingProject.Users" column="USER_ID"/>
+		</composite-id>	
+		<property name="hasRead" type="java.lang.Boolean">
+			<column name="HASREAD" />
+		</property>
+		<property name="hasGot" type="java.lang.Boolean">
+			<column name="HASGOT" />
+		</property>
+		<property name="wantsToBuy" type="java.lang.Boolean">
+			<column name="WANTSTOBUY" />
+		</property>
+	</class>
+</hibernate-mapping>

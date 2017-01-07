@@ -1,0 +1,26 @@
+<hibernate-mapping>
+	<class name="readingProject.Users" table="USERS">
+		<id name="user_id" type="int">
+			<column name="USER_ID" />
+			<generator class="increment" />
+		</id>
+		<property name="user_name" type="java.lang.String">
+			<column name="USER_NAME" />
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="EMAIL" />
+		</property>
+		<property name="password" type="java.lang.String">
+			<column name="PASSWORD" />
+		</property>
+		<property name="user_since" type="java.time.LocalDate">
+			<column name="USER_SINCE" />
+		</property>
+		<set name="interactions" cascade="save-update" table="INTERACTIONS">
+			<key>
+				<column name="USER_ID" not-null="true" />
+			</key>
+			<one-to-many class="readingProject.Interactions" />
+		</set>
+	</class>
+</hibernate-mapping>

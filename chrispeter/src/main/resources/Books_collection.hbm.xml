@@ -1,0 +1,32 @@
+<hibernate-mapping>
+	<class name="readingProject.Books_collection" table="BOOKS_COLLECTION">
+		<id name="book_id" type="int">
+			<column name="BOOK_ID" />
+			<generator class="increment" />
+		</id>
+		<property name="book_title" type="java.lang.String">
+			<column name="BOOK_TITLE" />
+		</property>
+		<property name="book_author" type="java.lang.String">
+			<column name="BOOK_AUTHOR" />
+		</property>
+		<property name="isbn" type="java.lang.Double">
+			<column name="ISBN" />
+		</property>
+		<property name="genre" type="java.lang.String">
+			<column name="GENRE" />
+		</property>
+		<property name="publication_year" type="int">
+			<column name="PUBLICATION_YEAR" />
+		</property>
+		<property name="language" type="java.lang.String">
+			<column name="LANGUAGE" />
+		</property>
+		<set name="interactions" cascade="save-update" table="INTERACTIONS">
+			<key>
+			<column name="BOOK_ID" not-null="true" />
+			</key>
+			<one-to-many class="readingProject.Interactions" />
+		</set>
+	</class>
+</hibernate-mapping>
