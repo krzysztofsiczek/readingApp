@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 
 public class BasicFrame extends JFrame {
 
-	public BasicFrame() {
+	private static final long serialVersionUID = 2517433524273385317L;
+
+	public BasicFrame() throws InterruptedException {
 		super("ReadApp");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 500);
@@ -21,22 +23,26 @@ public class BasicFrame extends JFrame {
 
 		backgroundPanel.setBackground(Color.GRAY);
 		backgroundPanel.setLayout(borderLayout);
-		backgroundPanel.setBorder(BorderFactory.createEmptyBorder(80, 180, 80, 180));
+		backgroundPanel.setBorder(BorderFactory.createEmptyBorder(60, 160, 60, 160));
+		BasicLabel welcomeLabel = new BasicLabel("Welcome to ReadApp! :)");
+		backgroundPanel.add(welcomeLabel, BorderLayout.CENTER);
 		
-		Listener listener = new Listener();
-		LoginPanel loginPanel = new LoginPanel(listener);
-		backgroundPanel.add(loginPanel, BorderLayout.CENTER);
-
-//		backgroundPanel.removeAll();
+/*		Listener listener = new Listener(this);
 		
-		DecisionPanel decisionPanel = new DecisionPanel();
+*/
+//		backgroundPanel.add(loginPanel, BorderLayout.CENTER);
+		
+//		DecisionListener decisionListener = new DecisionListener(this);
+//		DecisionPanel decisionPanel = new DecisionPanel(decisionListener);
+		
+/*		DecisionPanel decisionPanel = new DecisionPanel();
 		backgroundPanel.add(decisionPanel, BorderLayout.CENTER);
 	
 		AddingBookPanel addingBookPanel = new AddingBookPanel();
 		backgroundPanel.add(addingBookPanel, BorderLayout.CENTER);
 		
 		CheckingBookPanel checkingBookPanel = new CheckingBookPanel();
-		backgroundPanel.add(checkingBookPanel, BorderLayout.CENTER);
+		backgroundPanel.add(checkingBookPanel, BorderLayout.CENTER);*/
 		
 		setVisible(true);
 	}

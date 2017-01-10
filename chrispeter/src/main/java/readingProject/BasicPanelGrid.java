@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 
 public class BasicPanelGrid extends JPanel {
 
+	private static final long serialVersionUID = -1887724804609850470L;
+
 	public BasicPanelGrid(int rows, int columns) {
 		setBackground(Color.LIGHT_GRAY);
 		setMaximumSize(new Dimension(300, 200));
