@@ -7,25 +7,29 @@ import org.hibernate.cfg.Configuration;
 
 public class StoreData {
 
-	public static void main(String[] args) {
+	private Book bookToBeAdded;
+	private Configuration config;
+	private SessionFactory factory;
+	private Session session;
+	private Transaction t;
+	
+	public StoreData(Book bookToBeAdded){
+		this.bookToBeAdded = bookToBeAdded;
+		storeData();
+	}
 
-		Configuration config = new Configuration();
-		config.configure("hibernate.cfg.xml");
+	public void storeData() {
 
-		SessionFactory factory = config.buildSessionFactory();
-
-		Session session = factory.openSession();
-
-		Transaction t = session.beginTransaction();
+		setUpConfiguration();
 
 		Books_collection books = new Books_collection();
-		books.setBook_title("Przykladowa ksiazka");
-		books.setBook_author("Przykładowy autor");
-		books.setIsbn(836473893);
-		books.setGenre("Powieść");
-		books.setPublication_year(2000);
+		books.setBook_title(bookToBeAdded.getBookTitle());
+		books.setBook_author(bookToBeAdded.getBookAuthor());
+		books.setIsbn(bookToBeAdded.getIsbn());
+		books.setGenre(bookToBeAdded.getGenre());
+		books.setPublication_year(bookToBeAdded.getPublicationYear());
 
-		Users users = new Users();
+/*		Users users = new Users();
 
 		users.setUser_name("Marian Ryszard");
 		users.setEmail("ryszard@op.pl");
@@ -34,16 +38,24 @@ public class StoreData {
 		Interactions interactions = new Interactions();
 		interactions.setUsers(users);
 		interactions.setBooks_collection(books);
-		interactions.setHasGot(true);
+		interactions.setHasGot(true);*/
 
 		session.persist(books);
-		session.persist(users);
-		session.persist(interactions);
-		
+/*		session.persist(users);
+		session.persist(interactions);*/
+
 		t.commit();
 		session.close();
 
 		System.out.println("successfully saved");
 
+	}
+
+	private void setUpConfiguration() {
+		config = new Configuration();
+		config.configure("hibernate.cfg.xml");
+		factory = config.buildSessionFactory();
+		session = factory.openSession();
+		t = session.beginTransaction();
 	}
 }

@@ -1,4 +1,4 @@
-package readingProject;
+package readingProject.GUI;
 
 public class PreTesting {
 

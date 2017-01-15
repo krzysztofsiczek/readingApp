@@ -1,4 +1,4 @@
-package readingProject;
+package readingProject.GUI;
 
 import java.awt.Color;
 import java.awt.LayoutManager;

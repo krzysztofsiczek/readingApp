@@ -1,4 +1,4 @@
-package readingProject;
+package readingProject.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,23 +26,6 @@ public class BasicFrame extends JFrame {
 		backgroundPanel.setBorder(BorderFactory.createEmptyBorder(60, 160, 60, 160));
 		BasicLabel welcomeLabel = new BasicLabel("Welcome to ReadApp! :)");
 		backgroundPanel.add(welcomeLabel, BorderLayout.CENTER);
-		
-/*		Listener listener = new Listener(this);
-		
-*/
-//		backgroundPanel.add(loginPanel, BorderLayout.CENTER);
-		
-//		DecisionListener decisionListener = new DecisionListener(this);
-//		DecisionPanel decisionPanel = new DecisionPanel(decisionListener);
-		
-/*		DecisionPanel decisionPanel = new DecisionPanel();
-		backgroundPanel.add(decisionPanel, BorderLayout.CENTER);
-	
-		AddingBookPanel addingBookPanel = new AddingBookPanel();
-		backgroundPanel.add(addingBookPanel, BorderLayout.CENTER);
-		
-		CheckingBookPanel checkingBookPanel = new CheckingBookPanel();
-		backgroundPanel.add(checkingBookPanel, BorderLayout.CENTER);*/
 		
 		setVisible(true);
 	}

@@ -1,4 +1,4 @@
-package readingProject;
+package readingProject.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -14,8 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-import readingProject.AddingBookPanel.Listener;
 
 public class CheckingBookPanel extends JPanel implements ItemListener {
 
@@ -38,7 +36,6 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 		setLayout(borderLayout);
 		this.setBorder(BorderFactory.createEmptyBorder(20, 30, 30, 30));
 		setBackground(Color.LIGHT_GRAY);
-		buttonListener = new Listener(basicFrame);
 		addComponents();
 	}
 
@@ -51,8 +48,17 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 		comboBoxPanel.setBackground(Color.LIGHT_GRAY);
 		comboBox.addItemListener(this);
 		comboBoxPanel.add(comboBox);
+		JButton editButton = new JButton("Edit");
+		JButton deleteButton = new JButton("Delete");
 		JButton returnButton = new JButton("Return");
+		buttonListener = new Listener(basicFrame, editButton, deleteButton, returnButton);
+
+		editButton.addActionListener(buttonListener);
+		deleteButton.addActionListener(buttonListener);
 		returnButton.addActionListener(buttonListener);
+		
+		comboBoxPanel.add(editButton);
+		comboBoxPanel.add(deleteButton);
 		comboBoxPanel.add(returnButton);
 
 		JPanel card1 = new BasicPanelGrid(1, 1);
@@ -85,22 +91,47 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 	public class Listener implements ActionListener {
 
 		private BasicFrame basicFrame;
+		private JButton editButton;
+		private JButton deleteButton;
+		private JButton returnButton;
 
-		public Listener(BasicFrame basicFrame) {
+		public Listener(BasicFrame basicFrame, JButton editButton, JButton deleteButton, JButton returnButton) {
 			this.basicFrame = basicFrame;
+			this.editButton = editButton;
+			this.deleteButton = deleteButton;
+			this.returnButton = returnButton;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
-					basicFrame.getContentPane().removeAll();
-					basicFrame.add(decisionPanel);
-					basicFrame.validate();
+					if (editButton == (JButton) e.getSource()) {
+						//TODO background logic 						
+						CheckingBookPanel checkingBookPanel = new CheckingBookPanel(basicFrame);
+						basicFrame.getContentPane().removeAll();
+						basicFrame.add(checkingBookPanel);
+						basicFrame.validate();
+					} else if (deleteButton == (JButton) e.getSource()) {
+						//TODO background logic 
+						CheckingBookPanel checkingBookPanel = new CheckingBookPanel(basicFrame);
+						basicFrame.getContentPane().removeAll();
+						basicFrame.add(checkingBookPanel);
+						basicFrame.validate();
+/*						AddingBookPanel addingBookPanel = new AddingBookPanel(basicFrame);
+						basicFrame.getContentPane().removeAll();
+						basicFrame.add(addingBookPanel);*/
+					} else if (returnButton == (JButton) e.getSource()) {
+						DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
+						basicFrame.getContentPane().removeAll();
+						basicFrame.add(decisionPanel);
+						basicFrame.validate();
+					}
+
 				}
 			});
 		}
 	}
-
+	
+	
 }

@@ -1,4 +1,4 @@
-package readingProject;
+package readingProject.GUI;
 
 import java.awt.Font;
 import javax.swing.JLabel;

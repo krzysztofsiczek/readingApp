@@ -1,4 +1,4 @@
-package readingProject;
+package readingProject.GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,5 +14,12 @@ public class BasicPanelGrid extends JPanel {
 		setMaximumSize(new Dimension(300, 200));
 		setMinimumSize(new Dimension(150, 200));
 		setLayout(new GridLayout(rows, columns));
+	}
+	
+	public BasicPanelGrid(int rows, int columns, int hgap, int vgap) {
+		setBackground(Color.LIGHT_GRAY);
+		setMaximumSize(new Dimension(300, 200));
+		setMinimumSize(new Dimension(150, 200));
+		setLayout(new GridLayout(rows, columns, hgap, vgap));
 	}
 }

@@ -19,9 +19,6 @@
 		<property name="publication_year" type="int">
 			<column name="PUBLICATION_YEAR" />
 		</property>
-		<property name="language" type="java.lang.String">
-			<column name="LANGUAGE" />
-		</property>
 		<set name="interactions" cascade="save-update" table="INTERACTIONS">
 			<key>
 			<column name="BOOK_ID" not-null="true" />
