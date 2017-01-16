@@ -18,11 +18,15 @@ import javax.swing.SwingUtilities;
 public class CheckingBookPanel extends JPanel implements ItemListener {
 
 	private static final long serialVersionUID = 7035455204607828345L;
-	final static String START = "Select one of the options.";
-	final static String OWNEDBOOKS = "All my books.";
-	final static String READBOOKS = "Books I have read.";
-	final static String WANTTOBUYBOOKS = "Book I want to buy in the future.";
+	private final static String START = "Select one of the options.";
+	private final static String OWNEDBOOKS = "All my books.";
+	private final static String READBOOKS = "Books I have read.";
+	private final static String WANTTOBUYBOOKS = "Books on my wish list.";
 
+	private BasicButton editButton;
+	private BasicButton deleteButton;
+	private BasicButton returnButton;
+	
 	private BasicFrame basicFrame;
 	private Listener buttonListener;
 
@@ -48,9 +52,9 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 		comboBoxPanel.setBackground(Color.LIGHT_GRAY);
 		comboBox.addItemListener(this);
 		comboBoxPanel.add(comboBox);
-		JButton editButton = new JButton("Edit");
-		JButton deleteButton = new JButton("Delete");
-		JButton returnButton = new JButton("Return");
+		editButton = new BasicButton("Edit");
+		deleteButton = new BasicButton("Delete");
+		returnButton = new BasicButton("Return");
 		buttonListener = new Listener(basicFrame, editButton, deleteButton, returnButton);
 
 		editButton.addActionListener(buttonListener);

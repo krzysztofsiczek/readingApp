@@ -23,11 +23,24 @@ public class BasicTextArea extends JTextArea {
 		setLineWrap(true);
 		setWrapStyleWord(true);
 		Border border = BorderFactory.createLineBorder(Color.GRAY);
-		this.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(15, 10, 5, 10)));
+		this.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(12, 10, 5, 10)));
 		document = this.getDocument();
 		if (document instanceof AbstractDocument) {
 			abstractDocument = (AbstractDocument) document;
 			abstractDocument.setDocumentFilter(new DocumentSizeFilter(MAX_CHARACTERS));
+		}
+	}
+
+	public BasicTextArea(int length) {
+		super();
+		setBackground(Color.WHITE);
+		setWrapStyleWord(true);
+		Border border = BorderFactory.createLineBorder(Color.GRAY);
+		this.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 5, 5, 10)));
+		document = this.getDocument();
+		if (document instanceof AbstractDocument) {
+			abstractDocument = (AbstractDocument) document;
+			abstractDocument.setDocumentFilter(new DocumentSizeFilter(length));
 		}
 	}
 
@@ -38,6 +51,5 @@ public class BasicTextArea extends JTextArea {
 		setLineWrap(true);
 		setWrapStyleWord(true);
 	}
-	
-	
+
 }

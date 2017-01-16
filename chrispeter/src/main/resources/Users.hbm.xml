@@ -13,7 +13,7 @@
 		<property name="password" type="java.lang.String">
 			<column name="PASSWORD" />
 		</property>
-		<property name="user_since" type="java.time.LocalDate">
+		<property name="user_since" type="java.time.LocalDateTime">
 			<column name="USER_SINCE" />
 		</property>
 		<set name="interactions" cascade="save-update" table="INTERACTIONS">

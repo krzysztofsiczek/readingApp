@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,8 +33,8 @@ public class AddingBookPanel extends JPanel {
 
 	private JPanel basicPanelMiddle;
 	private JPanel basicPanelRight;
-	private JButton submitButton;
-	private JButton returnButton;
+	private BasicButton submitButton;
+	private BasicButton returnButton;
 	
 	private BasicTextArea bookTitleField;
 	private BasicTextArea bookAuthorField;
@@ -47,13 +48,18 @@ public class AddingBookPanel extends JPanel {
 	private JLabel addGenreLabel;
 	private JLabel addPublicationYearLabel;
 
-	private String plainTextPattern = "^[a-zA-Z0-9_ ]{0,50}$";
+	private String plainTextPattern = "^[a-zA-Z0-9_ '.]{0,50}$";
 	private String isbnPattern = "^[0-9]{10}||[0-9]{13}$";
 	private String yearsPattern = "([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|1[0-9]{3}|200[0-9]|201[0-7])";
 
 	private BasicCheckBox ifHasRead;
-	private BasicCheckBox ifHasGot;
-	private BasicCheckBox ifWantsToBuy;
+	private BasicRadioButton ifHasGot;
+	private BasicRadioButton ifWantsToBuy;
+	
+	private ButtonGroup radioButtonsGroup;
+	
+/*	private BasicCheckBox ifHasGot;
+	private BasicCheckBox ifWantsToBuy;*/
 	
 	private BasicErrorLabel basicErrorLabel;
 
@@ -65,7 +71,7 @@ public class AddingBookPanel extends JPanel {
 		this.basicFrame = basicFrame;
 		LayoutManager borderLayout = new BorderLayout();
 		setLayout(borderLayout);
-		this.setBorder(BorderFactory.createEmptyBorder(60, 10, 40, 10));
+		this.setBorder(BorderFactory.createEmptyBorder(60, 5, 40, 5));
 		setBackground(Color.LIGHT_GRAY);
 		addComponents();
 	}
@@ -97,7 +103,7 @@ public class AddingBookPanel extends JPanel {
 		publicationYearField.getDocument().addDocumentListener(new BookDocumentListener(publicationYearField));
 		publicationYearField.addFocusListener(new BookFocusListener(publicationYearField));
 
-		basicPanelMiddle = new BasicPanelGrid(5, 2, 5, 5);
+		basicPanelMiddle = new BasicPanelGrid(5, 2, 0, 5);
 		basicPanelMiddle.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		basicPanelMiddle.add(addBookTitleLabel);
@@ -116,8 +122,8 @@ public class AddingBookPanel extends JPanel {
 		basicPanelMiddle.add(publicationYearField);
 
 		basicPanelRight = new BasicPanelBox();
-		submitButton = new JButton("Submit");
-		returnButton = new JButton("Return");
+		submitButton = new BasicButton("Submit");
+		returnButton = new BasicButton("Return");
 
 		buttonListener = new Listener(basicFrame, submitButton, returnButton);
 
@@ -134,9 +140,23 @@ public class AddingBookPanel extends JPanel {
 		basicPanelRight.add(Box.createRigidArea(new Dimension(0, 18)));
 		basicPanelRight.add(returnButton);
 
-		ifHasGot = new BasicCheckBox("I have the book.");
+        radioButtonsGroup = new ButtonGroup();
+		ifHasGot = new BasicRadioButton("I have the book.");
 		ifHasRead = new BasicCheckBox("I have read the book.");
-		ifWantsToBuy = new BasicCheckBox("I want to buy the book.");
+		ifWantsToBuy = new BasicRadioButton("I want to buy the book.");
+		
+		ifHasGot.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
+		ifWantsToBuy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
+		radioButtonsGroup.add(ifHasGot);
+		radioButtonsGroup.add(ifWantsToBuy);
 		
 		JPanel basicPanelBottom = new JPanel();
 		basicPanelBottom.setBackground(Color.LIGHT_GRAY);
@@ -177,9 +197,9 @@ public class AddingBookPanel extends JPanel {
 							bookToBeAdded.setIsbn((Double.parseDouble(bookIsbnField.getText())));
 							bookToBeAdded.setGenre(genreField.getText());
 							bookToBeAdded.setPublicationYear(Integer.parseInt(publicationYearField.getText()));
-					
 							StoreData storingData = new StoreData(bookToBeAdded);
-							
+							storingData.storeData();
+						
 							AddingBookPanel addingBookPanel = new AddingBookPanel(basicFrame);
 							basicFrame.getContentPane().removeAll();
 							basicFrame.add(addingBookPanel);

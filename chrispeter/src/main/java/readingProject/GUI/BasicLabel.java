@@ -13,4 +13,11 @@ public class BasicLabel extends JLabel {
 		setHorizontalAlignment(JLabel.CENTER);
 		setVerticalAlignment(JLabel.CENTER);
 	}
+	
+	public BasicLabel(String text, int size) {
+		super(text);
+		setFont(new Font("georgia", Font.PLAIN, size));
+		setHorizontalAlignment(JLabel.CENTER);
+		setVerticalAlignment(JLabel.CENTER);
+	}
 }

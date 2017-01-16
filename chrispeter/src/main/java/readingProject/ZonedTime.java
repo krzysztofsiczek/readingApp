@@ -8,11 +8,11 @@ public class ZonedTime {
 	public ZonedTime() {
 	}
 
-	public static LocalDateTime checkCurrentDateTimeBeforePassingToDatabase() {
+	public LocalDateTime checkCurrentDateTimeBeforePassingToDatabase() {
 		return generateLocalDateTime();
 	}
 
-	private static LocalDateTime generateLocalDateTime() {
+	private LocalDateTime generateLocalDateTime() {
 
 		LocalDateTime finishedBookDateTime = LocalDateTime.now();
 
@@ -21,7 +21,7 @@ public class ZonedTime {
 		return finishedBookDateTime;
 	}
 	
-	private static LocalDateTime checkDateTimeAgainstTimeZone (LocalDateTime generatedBySystem){
+	private LocalDateTime checkDateTimeAgainstTimeZone (LocalDateTime generatedBySystem){
 		
 		ZoneId currentTimeZone = ZoneId.systemDefault();
 		ZoneId standardTimeZone = ZoneId.of("Europe/Warsaw");

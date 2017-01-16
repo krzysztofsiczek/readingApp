@@ -1,5 +1,7 @@
 package readingProject.GUI;
 
+import readingProject.StoreData;
+
 public class PreTesting {
 
 	public static void main(String[] args) throws InterruptedException {
