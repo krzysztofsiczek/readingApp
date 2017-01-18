@@ -1,13 +1,15 @@
 package readingProject.GUI;
 
-import readingProject.StoreData;
+import readingProject.SessionFactoryInstance;
 
 public class PreTesting {
 
+	private static final int ONE_SECOND = 1000;
+	
 	public static void main(String[] args) throws InterruptedException {
-		
+
 		BasicFrame basicFrame = new BasicFrame();
-		Thread.sleep(1500);
+		Thread.sleep(ONE_SECOND);
 
 		Thread loginThread = new Thread(new LoginPanel(basicFrame));
 		loginThread.start();

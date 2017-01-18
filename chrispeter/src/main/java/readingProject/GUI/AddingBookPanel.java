@@ -22,12 +22,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import readingProject.Book;
-import readingProject.StoreData;
+import readingProject.SessionFactoryInstance;
 
 public class AddingBookPanel extends JPanel {
 
 	private static final long serialVersionUID = -5083032799636807398L;
-	
+
 	private BasicFrame basicFrame;
 	private Listener buttonListener;
 
@@ -35,13 +35,13 @@ public class AddingBookPanel extends JPanel {
 	private JPanel basicPanelRight;
 	private BasicButton submitButton;
 	private BasicButton returnButton;
-	
+
 	private BasicTextArea bookTitleField;
 	private BasicTextArea bookAuthorField;
 	private BasicTextArea bookIsbnField;
 	private BasicTextArea genreField;
 	private BasicTextArea publicationYearField;
-	
+
 	private JLabel addBookTitleLabel;
 	private JLabel addBookAuthorLabel;
 	private JLabel addBookIsbnLabel;
@@ -52,15 +52,14 @@ public class AddingBookPanel extends JPanel {
 	private String isbnPattern = "^[0-9]{10}||[0-9]{13}$";
 	private String yearsPattern = "([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|1[0-9]{3}|200[0-9]|201[0-7])";
 
-	private BasicCheckBox ifHasRead;
+	private BasicRadioButton ifHasRead;
 	private BasicRadioButton ifHasGot;
 	private BasicRadioButton ifWantsToBuy;
-	
+	private BasicRadioButton invisibleButton;
+	private int selectedCountHasBook = 0;
+	private int selectedCountWantsToBuyBook = 0;
 	private ButtonGroup radioButtonsGroup;
-	
-/*	private BasicCheckBox ifHasGot;
-	private BasicCheckBox ifWantsToBuy;*/
-	
+
 	private BasicErrorLabel basicErrorLabel;
 
 	private boolean isUserInputCorrect = false;
@@ -86,19 +85,19 @@ public class AddingBookPanel extends JPanel {
 		bookTitleField = new BasicTextArea();
 		bookTitleField.getDocument().addDocumentListener(new BookDocumentListener(bookTitleField));
 		bookTitleField.addFocusListener(new BookFocusListener(bookTitleField));
-		
+
 		bookAuthorField = new BasicTextArea();
 		bookAuthorField.getDocument().addDocumentListener(new BookDocumentListener(bookAuthorField));
 		bookAuthorField.addFocusListener(new BookFocusListener(bookAuthorField));
-		
+
 		bookIsbnField = new BasicTextArea();
 		bookIsbnField.getDocument().addDocumentListener(new BookDocumentListener(bookIsbnField));
 		bookIsbnField.addFocusListener(new BookFocusListener(bookIsbnField));
-		
+
 		genreField = new BasicTextArea();
 		genreField.getDocument().addDocumentListener(new BookDocumentListener(genreField));
 		genreField.addFocusListener(new BookFocusListener(genreField));
-		
+
 		publicationYearField = new BasicTextArea();
 		publicationYearField.getDocument().addDocumentListener(new BookDocumentListener(publicationYearField));
 		publicationYearField.addFocusListener(new BookFocusListener(publicationYearField));
@@ -140,31 +139,56 @@ public class AddingBookPanel extends JPanel {
 		basicPanelRight.add(Box.createRigidArea(new Dimension(0, 18)));
 		basicPanelRight.add(returnButton);
 
-        radioButtonsGroup = new ButtonGroup();
+		radioButtonsGroup = new ButtonGroup();
 		ifHasGot = new BasicRadioButton("I have the book.");
-		ifHasRead = new BasicCheckBox("I have read the book.");
+		ifHasRead = new BasicRadioButton("I have read the book.");
 		ifWantsToBuy = new BasicRadioButton("I want to buy the book.");
-		
+		invisibleButton = new BasicRadioButton("");
+
 		ifHasGot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				selectedCountHasBook++;
+				selectedCountWantsToBuyBook = 0;
+				if (selectedCountHasBook > 1) {
+					invisibleButton.setSelected(true);
+					selectedCountHasBook = 0;
+				}
+
+				// TODO adding data to interactions table
+
 			}
 		});
-		
+
+		ifHasRead.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO adding data to interactions table
+			}
+		});
+
 		ifWantsToBuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				selectedCountWantsToBuyBook++;
+				selectedCountHasBook = 0;
+				if (selectedCountWantsToBuyBook > 1) {
+					invisibleButton.setSelected(true);
+					selectedCountWantsToBuyBook = 0;
+				}
+				
+				// TODO adding data to interactions table
 			}
 		});
-		
+
 		radioButtonsGroup.add(ifHasGot);
 		radioButtonsGroup.add(ifWantsToBuy);
-		
+		radioButtonsGroup.add(invisibleButton);
+
 		JPanel basicPanelBottom = new JPanel();
 		basicPanelBottom.setBackground(Color.LIGHT_GRAY);
 		basicPanelBottom.add(Box.createRigidArea(new Dimension(0, 30)));
 		basicPanelBottom.add(ifHasGot);
 		basicPanelBottom.add(ifHasRead);
 		basicPanelBottom.add(ifWantsToBuy);
-		
+
 		this.add(basicPanelMiddle, BorderLayout.CENTER);
 		this.add(basicPanelRight, BorderLayout.LINE_END);
 		this.add(basicPanelBottom, BorderLayout.PAGE_END);
@@ -197,9 +221,10 @@ public class AddingBookPanel extends JPanel {
 							bookToBeAdded.setIsbn((Double.parseDouble(bookIsbnField.getText())));
 							bookToBeAdded.setGenre(genreField.getText());
 							bookToBeAdded.setPublicationYear(Integer.parseInt(publicationYearField.getText()));
-							StoreData storingData = new StoreData(bookToBeAdded);
+							
+							SessionFactoryInstance storingData = new SessionFactoryInstance(bookToBeAdded);
 							storingData.storeData();
-						
+
 							AddingBookPanel addingBookPanel = new AddingBookPanel(basicFrame);
 							basicFrame.getContentPane().removeAll();
 							basicFrame.add(addingBookPanel);

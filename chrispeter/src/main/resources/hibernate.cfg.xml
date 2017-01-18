@@ -12,7 +12,7 @@
 		<property name="hibernate.connection.password">postgres</property>
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
-		<mapping resource="Books_collection.hbm.xml" />
+		<mapping resource="Books.hbm.xml" />
 		<mapping resource="Interactions.hbm.xml" />
 		<mapping resource="Users.hbm.xml" />
 	</session-factory>

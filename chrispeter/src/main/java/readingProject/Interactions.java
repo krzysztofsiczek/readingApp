@@ -2,26 +2,26 @@ package readingProject;
 
 public class Interactions {
 
-	private Books_Users_Id booksUsersId = new Books_Users_Id();
+	private BooksUsersId booksUsersId = new BooksUsersId();
 	
 	private boolean hasRead, hasGot, wantsToBuy;
 
 	protected Interactions() {
 	}
 
-	protected Books_Users_Id getId() {
+	protected BooksUsersId getId() {
 		return booksUsersId;
 	}
 
-	protected void setId(Books_Users_Id booksUsersId) {
+	protected void setId(BooksUsersId booksUsersId) {
 		this.booksUsersId = booksUsersId;
 	}
 
-	protected Books_collection getBooks_collection() {
+	protected Books getBooks() {
 		return getId().getBooks();
 	}
 
-	protected void setBooks_collection(Books_collection bookId) {
+	protected void setBooks(Books bookId) {
 		getId().setBooks(bookId);
 	}
 

@@ -1,8 +1,8 @@
 <hibernate-mapping>
 	<class name="readingProject.Interactions" table="INTERACTIONS">
-		<composite-id name="id" class="readingProject.Books_Users_Id">
-			<key-many-to-one name="books" class="readingProject.Books_collection" column="BOOK_ID" />
-			<key-many-to-one name="users" class="readingProject.Users" column="USER_ID"/>
+		<composite-id name="id" class="readingProject.BooksUsersId">
+			<key-many-to-one name="books" class="readingProject.Books" column="BOOKID" />
+			<key-many-to-one name="users" class="readingProject.Users" column="USERID"/>
 		</composite-id>	
 		<property name="hasRead" type="java.lang.Boolean">
 			<column name="HASREAD" />

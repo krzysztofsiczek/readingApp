@@ -1,28 +1,33 @@
 package readingProject.GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 public class DecisionPanel extends JPanel {
 
 	private static final long serialVersionUID = -139708262772011188L;
 	private BasicFrame basicFrame;
+	private BasicTextArea quoteLabel;
+	private JPanel choicePanel;
 
 	public DecisionPanel(BasicFrame basicFrame) {
 		super();
 		this.basicFrame = basicFrame;
-		setBackground(Color.GRAY);
-		LayoutManager boxLayout = new BoxLayout(this, BoxLayout.X_AXIS);
-		setLayout(boxLayout);
+		LayoutManager borderLayout = new BorderLayout();
+		setBackground(Color.LIGHT_GRAY);
+		setLayout(borderLayout);
 		addComponents();
 	}
 
@@ -30,8 +35,10 @@ public class DecisionPanel extends JPanel {
 
 		JLabel addBookLabel = new JLabel("Add a book", JLabel.CENTER);
 		addBookLabel.setFont(new Font("georgia", Font.ITALIC, 22));
+		addBookLabel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 		JLabel checkBookLabel = new JLabel("Check a book", JLabel.CENTER);
 		checkBookLabel.setFont(new Font("georgia", Font.ITALIC, 24));
+		checkBookLabel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 
 		JPanel basicPanelLeft = new BasicPanelGrid(1, 1);
 		JPanel basicPanelRight = new BasicPanelGrid(1, 1);
@@ -43,9 +50,28 @@ public class DecisionPanel extends JPanel {
 		basicPanelLeft.addMouseListener(decisionListener);
 		basicPanelRight.addMouseListener(decisionListener);
 
-		this.add(basicPanelLeft);
-		this.add(Box.createRigidArea(new Dimension(30, 0)));
-		this.add(basicPanelRight);
+		choicePanel = new JPanel();
+		LayoutManager boxLayout = new BoxLayout(choicePanel, BoxLayout.X_AXIS);
+		choicePanel.setLayout(boxLayout);
+		choicePanel.setBackground(Color.GRAY);
+
+		choicePanel.add(basicPanelLeft);
+		choicePanel.add(Box.createRigidArea(new Dimension(80, 0)));
+		choicePanel.add(basicPanelRight);
+
+		quoteLabel = new BasicTextArea();
+		quoteLabel.setText("\"Life is to be lived, not controlled.\"");
+		quoteLabel.setWrapStyleWord(true);
+		quoteLabel.setLineWrap(true);
+		quoteLabel.setOpaque(false);
+		quoteLabel.setEditable(false);
+		quoteLabel.setFocusable(false);
+		quoteLabel.setBackground(UIManager.getColor("Label.background"));
+		quoteLabel.setFont(UIManager.getFont("Label.font"));
+		quoteLabel.setBorder(UIManager.getBorder("Label.border"));
+
+		this.add(choicePanel, BorderLayout.CENTER);
+		this.add(quoteLabel, BorderLayout.PAGE_END);
 	}
 
 	public class DecisionListener implements MouseListener {

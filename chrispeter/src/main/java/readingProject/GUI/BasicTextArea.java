@@ -45,7 +45,7 @@ public class BasicTextArea extends JTextArea {
 	}
 
 	public BasicTextArea(String text) {
-		super(50, 1);
+		super(50, 3);
 		append(text);
 		setBackground(Color.WHITE);
 		setLineWrap(true);

@@ -8,9 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -19,11 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.LineBorder;
-
-import org.apache.commons.validator.routines.EmailValidator;
-
-import readingProject.StoreData;
+import readingProject.CheckUserLoginData;
 
 public class LoginPanel extends JPanel implements Runnable {
 
@@ -36,8 +29,8 @@ public class LoginPanel extends JPanel implements Runnable {
 	private BasicLabel askingToRegisterLabel;
 	private Listener loginListener;
 	private BasicFrame basicFrame;
-	private boolean isLoginDataCorrect;
-
+	private boolean isLoginDataCorrect = false;
+	
 	public LoginPanel(BasicFrame basicFrame) {
 		super();
 		this.basicFrame = basicFrame;
@@ -47,7 +40,7 @@ public class LoginPanel extends JPanel implements Runnable {
 		gridBag.setConstraints(this, constraints);
 		setLayout(gridBag);
 		setBackground(Color.LIGHT_GRAY);
-		this.loginListener = new Listener(basicFrame);
+		this.loginListener = new Listener();
 		createComponents();
 	}
 
@@ -101,12 +94,6 @@ public class LoginPanel extends JPanel implements Runnable {
 
 	public class Listener implements ActionListener {
 
-		private BasicFrame basicFrame;
-
-		public Listener(BasicFrame basicFrame) {
-			this.basicFrame = basicFrame;
-		}
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			SwingUtilities.invokeLater(new Runnable() {
@@ -138,8 +125,7 @@ public class LoginPanel extends JPanel implements Runnable {
 
 		String userNameToBeCompared = userName.getText();
 		String passwordToBeCompared = new String(userPassword.getPassword());
-
-		StoreData checkingLoginData = new StoreData(userNameToBeCompared, passwordToBeCompared);
-		isLoginDataCorrect = checkingLoginData.checkLoginData();
+		CheckUserLoginData checkUserLoginData = new CheckUserLoginData(userNameToBeCompared, passwordToBeCompared);
+		isLoginDataCorrect = checkUserLoginData.check();
 	}
 }

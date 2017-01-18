@@ -1,33 +1,27 @@
 package readingProject;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
-public class Users {
+public class User {
 
 	private int userId;
 	private String userName, email, password;
 	private LocalDateTime userSince;
-	private Set<Interactions> interactions = new HashSet<Interactions>();
 
-	public Users() {
-	};
+	public User() {
+	}
 
-	public Users(int userId, String userName, String email, String password, LocalDateTime userSince, Set<Interactions> interactions) {
-		this.userId = userId;
+	public User(String userName, String email, String password) {
 		this.userName = userName;
 		this.email = email;
 		this.password = password;
-		this.userSince = userSince;
-		this.interactions = interactions;
 	}
 
 	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUser_id(int userId) {
 		this.userId = userId;
 	}
 
@@ -59,15 +53,7 @@ public class Users {
 		return userSince;
 	}
 
-	public void setUserSince(LocalDateTime userSince) {
-		this.userSince = userSince;
-	}
-
-	public Set<Interactions> getInteractions() {
-		return interactions;
-	}
-
-	public void setInteractions(Set<Interactions> interactions) {
-		this.interactions = interactions;
+	public void setUserSince(LocalDateTime userRegistrationDateTime) {
+		this.userSince = userRegistrationDateTime;
 	}
 }

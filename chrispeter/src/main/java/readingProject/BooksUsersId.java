@@ -3,19 +3,20 @@ package readingProject;
 import java.io.Serializable;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class Books_Users_Id implements Serializable {
+public class BooksUsersId implements Serializable {
 
-	private Books_collection books;
+	private static final long serialVersionUID = -1888914384383362260L;
+	private Books books;
 	private Users users;
 
-	public Books_Users_Id() {
+	public BooksUsersId() {
 	}
 
-	public Books_collection getBooks() {
+	public Books getBooks() {
 		return books;
 	}
 
-	public void setBooks(Books_collection books) {
+	public void setBooks(Books books) {
 		this.books = books;
 	}
 
@@ -31,11 +32,11 @@ public class Books_Users_Id implements Serializable {
 
 		if (o == this)
 			return true;
-		if (!(o instanceof Books_Users_Id)) {
+		if (!(o instanceof BooksUsersId)) {
 			return false;
 		}
 
-		Books_Users_Id booksUsersId = (Books_Users_Id) o;
+		BooksUsersId booksUsersId = (BooksUsersId) o;
 
 		return booksUsersId.books.equals(books) && booksUsersId.users.equals(users);
 	}

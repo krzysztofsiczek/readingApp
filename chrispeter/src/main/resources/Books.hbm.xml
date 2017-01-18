@@ -1,14 +1,14 @@
 <hibernate-mapping>
-	<class name="readingProject.Books_collection" table="BOOKS_COLLECTION">
-		<id name="book_id" type="int">
-			<column name="BOOK_ID" />
+	<class name="readingProject.Books" table="BOOKS">
+		<id name="bookId" type="int">
+			<column name="BOOKID" />
 			<generator class="increment" />
 		</id>
-		<property name="book_title" type="java.lang.String">
-			<column name="BOOK_TITLE" />
+		<property name="bookTitle" type="java.lang.String">
+			<column name="BOOKTITLE" />
 		</property>
-		<property name="book_author" type="java.lang.String">
-			<column name="BOOK_AUTHOR" />
+		<property name="bookAuthor" type="java.lang.String">
+			<column name="BOOKAUTHOR" />
 		</property>
 		<property name="isbn" type="java.lang.Double">
 			<column name="ISBN" />
@@ -16,12 +16,12 @@
 		<property name="genre" type="java.lang.String">
 			<column name="GENRE" />
 		</property>
-		<property name="publication_year" type="int">
-			<column name="PUBLICATION_YEAR" />
+		<property name="publicationYear" type="int">
+			<column name="PUBLICATIONYEAR" />
 		</property>
 		<set name="interactions" cascade="save-update" table="INTERACTIONS">
 			<key>
-			<column name="BOOK_ID" not-null="true" />
+			<column name="BOOKID" not-null="true" />
 			</key>
 			<one-to-many class="readingProject.Interactions" />
 		</set>

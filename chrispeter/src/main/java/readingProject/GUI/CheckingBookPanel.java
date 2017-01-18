@@ -30,8 +30,8 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 	private BasicFrame basicFrame;
 	private Listener buttonListener;
 
-	LayoutManager flowLayout = new FlowLayout(1, 15, 10);
-	JPanel allCards;
+	private LayoutManager flowLayout = new FlowLayout(1, 15, 10);
+	private JPanel allCards;
 
 	public CheckingBookPanel(BasicFrame basicFrame) {
 		super();
@@ -47,7 +47,7 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 
 		JPanel comboBoxPanel = new JPanel(flowLayout);
 		String comboBoxItems[] = { START, OWNEDBOOKS, READBOOKS, WANTTOBUYBOOKS };
-		JComboBox comboBox = new JComboBox(comboBoxItems);
+		JComboBox<Object> comboBox = new JComboBox<Object>(comboBoxItems);
 		comboBox.setEditable(false);
 		comboBoxPanel.setBackground(Color.LIGHT_GRAY);
 		comboBox.addItemListener(this);
