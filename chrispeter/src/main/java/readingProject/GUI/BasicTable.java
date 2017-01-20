@@ -21,14 +21,6 @@ public class BasicTable extends JPanel {
         bookTable.setPreferredScrollableViewportSize(new Dimension(500, 70));
         bookTable.setFillsViewportHeight(true);
 
-       /* if (DEBUG) {
-            table.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    printDebugData(table);
-                }
-            });
-        }
-*/
         JScrollPane scrollPane = new JScrollPane(bookTable);
         add(scrollPane);
     }
