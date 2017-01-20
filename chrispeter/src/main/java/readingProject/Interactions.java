@@ -6,55 +6,54 @@ public class Interactions {
 	
 	private boolean hasRead, hasGot, wantsToBuy;
 
-	protected Interactions() {
+	public Interactions() {
 	}
 
-	protected BooksUsersId getId() {
+	public BooksUsersId getId() {
 		return booksUsersId;
 	}
 
-	protected void setId(BooksUsersId booksUsersId) {
+	public void setId(BooksUsersId booksUsersId) {
 		this.booksUsersId = booksUsersId;
 	}
 
-	protected Books getBooks() {
+	public Books getBooks() {
 		return getId().getBooks();
 	}
 
-	protected void setBooks(Books bookId) {
+	public void setBooks(Books bookId) {
 		getId().setBooks(bookId);
 	}
 
-	protected Users getUsers() {
+	public Users getUsers() {
 		return getId().getUsers();
 	}
 
-	protected void setUsers(Users users) {
+	public void setUsers(Users users) {
 		getId().setUsers(users);
 	}
 
-	protected boolean getHasRead() {
+	public boolean getHasRead() {
 		return hasRead;
 	}
 
-	protected void setHasRead(boolean hasRead) {
+	public void setHasRead(boolean hasRead) {
 		this.hasRead = hasRead;
 	}
 
-	protected boolean getHasGot() {
+	public boolean getHasGot() {
 		return hasGot;
 	}
 
-	protected void setHasGot(boolean hasGot) {
+	public void setHasGot(boolean hasGot) {
 		this.hasGot = hasGot;
 	}
 
-	protected boolean getWantsToBuy() {
+	public boolean getWantsToBuy() {
 		return wantsToBuy;
 	}
 
-	protected void setWantsToBuy(boolean wantsToBuy) {
+	public void setWantsToBuy(boolean wantsToBuy) {
 		this.wantsToBuy = wantsToBuy;
 	}
-
 }

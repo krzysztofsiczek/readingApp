@@ -22,7 +22,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import readingProject.Book;
+import readingProject.BooksUsersId;
+import readingProject.Interactions;
 import readingProject.SessionFactoryInstance;
+import readingProject.StoreBookData;
+import readingProject.StoreData;
+import readingProject.StoreInteractionsData;
+import readingProject.UserSessionInstance;
 
 public class AddingBookPanel extends JPanel {
 
@@ -173,7 +179,7 @@ public class AddingBookPanel extends JPanel {
 					invisibleButton.setSelected(true);
 					selectedCountWantsToBuyBook = 0;
 				}
-				
+
 				// TODO adding data to interactions table
 			}
 		});
@@ -216,18 +222,31 @@ public class AddingBookPanel extends JPanel {
 									JOptionPane.PLAIN_MESSAGE);
 
 							Book bookToBeAdded = new Book();
+
+							String isbnToBeAdded = bookIsbnField.getText();
 							bookToBeAdded.setBookTitle(bookTitleField.getText());
 							bookToBeAdded.setBookAuthor(bookAuthorField.getText());
-							bookToBeAdded.setIsbn((Double.parseDouble(bookIsbnField.getText())));
+							bookToBeAdded.setIsbn((Double.parseDouble(isbnToBeAdded)));
 							bookToBeAdded.setGenre(genreField.getText());
 							bookToBeAdded.setPublicationYear(Integer.parseInt(publicationYearField.getText()));
-							
-							SessionFactoryInstance storingData = new SessionFactoryInstance(bookToBeAdded);
-							storingData.storeData();
 
-							AddingBookPanel addingBookPanel = new AddingBookPanel(basicFrame);
+							StoreBookData storeBookData = new StoreBookData(bookToBeAdded);
+							Integer bookId = storeBookData.saveAndRetrieveId();
+							Integer userId = UserSessionInstance.getUserSessionInstance();
+							
+							Interactions interactionToBeAdded = new Interactions();
+							BooksUsersId wynik = interactionToBeAdded.getId();
+							System.out.println(wynik);
+							
+							StoreData storeInteractionsData = new StoreInteractionsData(interactionToBeAdded);
+							storeInteractionsData.save();
+							
+							System.out.println(userId + " przerwa i zaraz book id " + bookId);
+							JOptionPane.showMessageDialog(getParent(),"Thank you for adding the book.",
+									"Book added", JOptionPane.WARNING_MESSAGE);
+							DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
 							basicFrame.getContentPane().removeAll();
-							basicFrame.add(addingBookPanel);
+							basicFrame.add(decisionPanel);
 						} else {
 							JOptionPane.showMessageDialog(getParent(),
 									"Enter correct information for your book. Remember that book title is required.",

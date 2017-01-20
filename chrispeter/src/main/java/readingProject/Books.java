@@ -5,7 +5,8 @@ import java.util.Set;
 
 public class Books {
 
-	private int bookId, publicationYear;
+	private Integer bookId;
+	private int publicationYear;
 	private double isbn;
 	private String bookTitle, bookAuthor, genre;
 	private Set<Interactions> interactions = new HashSet<Interactions>();
@@ -13,7 +14,7 @@ public class Books {
 	public Books() {
 	};
 
-	public Books(int bookId, String bookTitle, String bookAuthor, double isbn, String genre,
+	public Books(Integer bookId, String bookTitle, String bookAuthor, double isbn, String genre,
 			int publicationYear, Set<Interactions> interactions) {
 		this.bookId = bookId;
 		this.bookTitle = bookTitle;
@@ -24,11 +25,11 @@ public class Books {
 		this.interactions = interactions;
 	}
 
-	public int getBookId() {
+	public Integer getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(int bookId) {
+	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
 	}
 

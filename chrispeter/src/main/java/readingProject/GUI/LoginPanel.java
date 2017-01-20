@@ -16,13 +16,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingUtilities;
-import readingProject.CheckUserLoginData;
 
-public class LoginPanel extends JPanel implements Runnable {
+import readingProject.CheckData;
+import readingProject.CheckUserLoginData;
+import readingProject.UserSessionInstance;
+
+public class LoginPanel extends JPanel {
 
 	private static final long serialVersionUID = 2500782151894671531L;
 
-	private JFormattedTextField userName;
+	private JFormattedTextField userEmail;
 	private JPasswordField userPassword;
 	private BasicButton loginButton;
 	private BasicButton registerButton;
@@ -30,7 +33,8 @@ public class LoginPanel extends JPanel implements Runnable {
 	private Listener loginListener;
 	private BasicFrame basicFrame;
 	private boolean isLoginDataCorrect = false;
-	
+	private Integer userId;
+
 	public LoginPanel(BasicFrame basicFrame) {
 		super();
 		this.basicFrame = basicFrame;
@@ -44,22 +48,15 @@ public class LoginPanel extends JPanel implements Runnable {
 		createComponents();
 	}
 
-	@Override
-	public void run() {
-		basicFrame.getContentPane().removeAll();
-		basicFrame.add(this, BorderLayout.CENTER);
-		basicFrame.validate();
-	}
-
 	private void createComponents() {
-		JLabel name = new JLabel("Name: ");
+		JLabel email = new JLabel("User e-mail: ");
 		JLabel password = new JLabel("Password: ");
-		userName = new JFormattedTextField();
+		userEmail = new JFormattedTextField();
 		userPassword = new JPasswordField();
 
 		JPanel inputPanel = new BasicPanelGrid(2, 2);
-		inputPanel.add(name);
-		inputPanel.add(userName);
+		inputPanel.add(email);
+		inputPanel.add(userEmail);
 		inputPanel.add(password);
 		inputPanel.add(userPassword);
 		inputPanel.setBackground(Color.LIGHT_GRAY);
@@ -77,17 +74,22 @@ public class LoginPanel extends JPanel implements Runnable {
 		askingToRegisterLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
 		BasicPanelBox buttonPanel = new BasicPanelBox();
-		buttonPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		buttonPanel.add(loginButton);
-		buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+		buttonPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		buttonPanel.add(askingToRegisterLabel);
 		buttonPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		buttonPanel.add(registerButton);
 
+		BasicLabel welcomeLabel = new BasicLabel("Welcome to ReadApp! :)");
+
 		JPanel parentPanel = new JPanel();
-		parentPanel.setLayout(new BorderLayout());
+		parentPanel.setBackground(Color.LIGHT_GRAY);
+		parentPanel.setPreferredSize(new Dimension(300, 200));
+		parentPanel.setLayout(new BorderLayout(0, 20));
+		parentPanel.add(welcomeLabel, BorderLayout.NORTH);
 		parentPanel.add(inputPanel, BorderLayout.CENTER);
 		parentPanel.add(buttonPanel, BorderLayout.SOUTH);
+
 
 		this.add(parentPanel);
 	}
@@ -123,9 +125,13 @@ public class LoginPanel extends JPanel implements Runnable {
 
 	private void validateLoginData() {
 
-		String userNameToBeCompared = userName.getText();
+		String userEmailToBeCompared = userEmail.getText();
 		String passwordToBeCompared = new String(userPassword.getPassword());
-		CheckUserLoginData checkUserLoginData = new CheckUserLoginData(userNameToBeCompared, passwordToBeCompared);
+		CheckData checkUserLoginData = new CheckUserLoginData(userEmailToBeCompared, passwordToBeCompared);
 		isLoginDataCorrect = checkUserLoginData.check();
+		if (isLoginDataCorrect == true) {
+			userId = UserSessionInstance.getUserSessionInstance(userEmailToBeCompared);
+			System.out.println("numer identyfikujacy usera to " + userId);
+		}
 	}
 }

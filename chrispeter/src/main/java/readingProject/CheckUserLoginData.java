@@ -12,12 +12,12 @@ public class CheckUserLoginData implements CheckData {
 	private SessionFactory sessionFactory;
 	private Session session;
 	private Transaction transaction;
-	private String userNameToBeCompared;
+	private String userEmailToBeCompared;
 	private String passwordToBeCompared;
 	private boolean isUserLoginDataCorrect;
 
-	public CheckUserLoginData(String userNameToBeCompared, String passwordToBeCompared) {
-		this.userNameToBeCompared = userNameToBeCompared;
+	public CheckUserLoginData(String userEmailToBeCompared, String passwordToBeCompared) {
+		this.userEmailToBeCompared = userEmailToBeCompared;
 		this.passwordToBeCompared = passwordToBeCompared;
 	}
 
@@ -40,9 +40,9 @@ public class CheckUserLoginData implements CheckData {
 	}
 
 	private void checkUserLoginData() {
-		String checkingLoginData = "FROM Users WHERE userName= :userName AND password= :password";
+		String checkingLoginData = "FROM Users WHERE email= :email AND password= :password";
 		Query<User> query = session.createQuery(checkingLoginData);
-		query.setParameter("userName", userNameToBeCompared);
+		query.setParameter("email", userEmailToBeCompared);
 		query.setParameter("password", passwordToBeCompared);
 		List<User> result = query.getResultList();
 		boolean wynik = result.isEmpty();

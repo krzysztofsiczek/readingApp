@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,11 +15,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 public class CheckingBookPanel extends JPanel implements ItemListener {
 
 	private static final long serialVersionUID = 7035455204607828345L;
-	private final static String START = "Select one of the options.";
+	private static final Integer INSTRUCTIONMAXLENGTH = 100;
 	private final static String OWNEDBOOKS = "All my books.";
 	private final static String READBOOKS = "Books I have read.";
 	private final static String WANTTOBUYBOOKS = "Books on my wish list.";
@@ -26,7 +28,7 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 	private BasicButton editButton;
 	private BasicButton deleteButton;
 	private BasicButton returnButton;
-	
+
 	private BasicFrame basicFrame;
 	private Listener buttonListener;
 
@@ -46,7 +48,7 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 	private void addComponents() {
 
 		JPanel comboBoxPanel = new JPanel(flowLayout);
-		String comboBoxItems[] = { START, OWNEDBOOKS, READBOOKS, WANTTOBUYBOOKS };
+		String comboBoxItems[] = { OWNEDBOOKS, READBOOKS, WANTTOBUYBOOKS };
 		JComboBox<Object> comboBox = new JComboBox<Object>(comboBoxItems);
 		comboBox.setEditable(false);
 		comboBoxPanel.setBackground(Color.LIGHT_GRAY);
@@ -60,28 +62,25 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 		editButton.addActionListener(buttonListener);
 		deleteButton.addActionListener(buttonListener);
 		returnButton.addActionListener(buttonListener);
-		
+
 		comboBoxPanel.add(editButton);
 		comboBoxPanel.add(deleteButton);
 		comboBoxPanel.add(returnButton);
 
 		JPanel card1 = new BasicPanelGrid(1, 1);
-		card1.add(new BasicTextArea("Choose one of the options"));
+		BasicTable table = new BasicTable();
+		card1.add(table);
 
 		JPanel card2 = new BasicPanelGrid(1, 1);
-		card2.add(new BasicTextArea("These are all your books."));
+		card2.add(new BasicTextArea("These books were lucky enough that you have read them."));
 
 		JPanel card3 = new BasicPanelGrid(1, 1);
-		card3.add(new BasicTextArea("These books were lucky enough that you have read them."));
-
-		JPanel card4 = new BasicPanelGrid(1, 1);
-		card4.add(new BasicTextArea("These books you would love to buy if given a chance."));
+		card3.add(new BasicTextArea("These books you would love to buy if given a chance."));
 
 		allCards = new JPanel(new CardLayout());
-		allCards.add(card1, START);
-		allCards.add(card2, OWNEDBOOKS);
-		allCards.add(card3, READBOOKS);
-		allCards.add(card4, WANTTOBUYBOOKS);
+		allCards.add(card1, OWNEDBOOKS);
+		allCards.add(card2, READBOOKS);
+		allCards.add(card3, WANTTOBUYBOOKS);
 
 		this.add(comboBoxPanel, BorderLayout.PAGE_START);
 		this.add(allCards, BorderLayout.CENTER);
@@ -111,20 +110,23 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					if (editButton == (JButton) e.getSource()) {
-						//TODO background logic 						
+						// TODO background logic
 						CheckingBookPanel checkingBookPanel = new CheckingBookPanel(basicFrame);
 						basicFrame.getContentPane().removeAll();
 						basicFrame.add(checkingBookPanel);
 						basicFrame.validate();
 					} else if (deleteButton == (JButton) e.getSource()) {
-						//TODO background logic 
+						// TODO background logic
 						CheckingBookPanel checkingBookPanel = new CheckingBookPanel(basicFrame);
 						basicFrame.getContentPane().removeAll();
 						basicFrame.add(checkingBookPanel);
 						basicFrame.validate();
-/*						AddingBookPanel addingBookPanel = new AddingBookPanel(basicFrame);
-						basicFrame.getContentPane().removeAll();
-						basicFrame.add(addingBookPanel);*/
+						/*
+						 * AddingBookPanel addingBookPanel = new
+						 * AddingBookPanel(basicFrame);
+						 * basicFrame.getContentPane().removeAll();
+						 * basicFrame.add(addingBookPanel);
+						 */
 					} else if (returnButton == (JButton) e.getSource()) {
 						DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
 						basicFrame.getContentPane().removeAll();
@@ -136,6 +138,5 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 			});
 		}
 	}
-	
-	
+
 }

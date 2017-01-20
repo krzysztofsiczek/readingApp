@@ -15,7 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.apache.commons.validator.routines.EmailValidator;
 
+import readingProject.CheckData;
 import readingProject.CheckWhetherUserExists;
+import readingProject.StoreData;
 import readingProject.StoreUserData;
 import readingProject.User;
 import readingProject.ZonedTime;
@@ -118,7 +120,7 @@ public class RegistrationPanel extends JPanel {
 						if (isDataCorrect == true) {
 							String emailToBeAdded = userEmail.getText();
 							doesUserAlreadyExist = false;
-							CheckWhetherUserExists checkWhetherUserExists = new CheckWhetherUserExists(emailToBeAdded);
+							CheckData checkWhetherUserExists = new CheckWhetherUserExists(emailToBeAdded);
 							doesUserAlreadyExist = checkWhetherUserExists.check();
 							if (doesUserAlreadyExist == true) {
 								JOptionPane.showMessageDialog(getParent(),
@@ -135,7 +137,7 @@ public class RegistrationPanel extends JPanel {
 								userToBeAdded.setPassword(new String(userPassword.getPassword()));
 								userToBeAdded.setUserSince(userRegistrationDateTime);
 
-								StoreUserData storeUserData = new StoreUserData(userToBeAdded);
+								StoreData storeUserData = new StoreUserData(userToBeAdded);
 								storeUserData.save();
 
 								LoginPanel loginPanel = new LoginPanel(basicFrame);

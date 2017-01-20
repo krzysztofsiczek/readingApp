@@ -2,6 +2,7 @@ package readingProject.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.LayoutManager;
@@ -18,8 +19,10 @@ import javax.swing.UIManager;
 public class DecisionPanel extends JPanel {
 
 	private static final long serialVersionUID = -139708262772011188L;
+	private static int QUOTEMAXLENGTH = 255;
 	private BasicFrame basicFrame;
-	private BasicTextArea quoteLabel;
+	private BasicTextArea quote;
+	private BasicTextArea authorBook;
 	private JPanel choicePanel;
 
 	public DecisionPanel(BasicFrame basicFrame) {
@@ -59,19 +62,39 @@ public class DecisionPanel extends JPanel {
 		choicePanel.add(Box.createRigidArea(new Dimension(80, 0)));
 		choicePanel.add(basicPanelRight);
 
-		quoteLabel = new BasicTextArea();
-		quoteLabel.setText("\"Life is to be lived, not controlled.\"");
-		quoteLabel.setWrapStyleWord(true);
-		quoteLabel.setLineWrap(true);
-		quoteLabel.setOpaque(false);
-		quoteLabel.setEditable(false);
-		quoteLabel.setFocusable(false);
-		quoteLabel.setBackground(UIManager.getColor("Label.background"));
-		quoteLabel.setFont(UIManager.getFont("Label.font"));
-		quoteLabel.setBorder(UIManager.getBorder("Label.border"));
-
+		String newQuote = new String("\"Life is to be lived, not controlled; and humanity is won by continuing to play in face of certain defeat.\"");
+		quote = new BasicTextArea(QUOTEMAXLENGTH);
+		quote.setText(newQuote);
+		quote.setLineWrap(true);
+		quote.setBackground(Color.GRAY);
+		quote.setForeground(Color.DARK_GRAY);
+		quote.setEditable(false);
+		quote.setFocusable(false);
+		quote.setFont(new Font("georgia", Font.PLAIN, 20));
+		quote.setBorder(UIManager.getBorder("Label.border"));
+		
+		String newAuthorBook = new String("Ralph Ellison, Invisible Man");
+		authorBook = new BasicTextArea(QUOTEMAXLENGTH);
+		authorBook.setAlignmentX(LEFT_ALIGNMENT);
+		authorBook.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		authorBook.setText(newAuthorBook);
+		authorBook.setBackground(Color.GRAY);
+		authorBook.setForeground(Color.DARK_GRAY);
+		authorBook.setEditable(false);
+		authorBook.setFocusable(false);
+		authorBook.setFont(new Font("georgia", Font.PLAIN, 16));
+		authorBook.setBorder(UIManager.getBorder("Label.border"));
+		
+		JPanel quotePanel = new JPanel();
+		LayoutManager boxLayout2 = new BoxLayout(quotePanel, BoxLayout.Y_AXIS);
+		quotePanel.setLayout(boxLayout2);
+		quotePanel.setBackground(Color.GRAY);
+		quotePanel.add(quote);
+		quotePanel.add(Box.createRigidArea(new Dimension(10, 10)));
+		quotePanel.add(authorBook);
+		
 		this.add(choicePanel, BorderLayout.CENTER);
-		this.add(quoteLabel, BorderLayout.PAGE_END);
+		this.add(quotePanel, BorderLayout.PAGE_END);
 	}
 
 	public class DecisionListener implements MouseListener {

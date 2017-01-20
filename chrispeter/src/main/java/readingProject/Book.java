@@ -2,14 +2,15 @@ package readingProject;
 
 public class Book {
 
-	private int bookId, publicationYear;
-	private double isbn;
+	private Integer bookId;
+	private int publicationYear;
+	private Double isbn;
 	private String bookTitle, bookAuthor, genre;
 
 	public Book() {
 	};
 
-	public Book(String bookTitle, String bookAuthor, double isbn, String genre, int publicationYear) {
+	public Book(String bookTitle, String bookAuthor, Double isbn, String genre, int publicationYear) {
 		this.bookTitle = bookTitle;
 		this.bookAuthor = bookAuthor;
 		this.isbn = isbn;
@@ -17,7 +18,7 @@ public class Book {
 		this.publicationYear = publicationYear;
 	}
 
-	public Book(int bookId, String bookTitle, String bookAuthor, double isbn, String genre, int publicationYear) {
+	public Book(Integer bookId, String bookTitle, String bookAuthor, Double isbn, String genre, int publicationYear) {
 		this.bookId = bookId;
 		this.bookTitle = bookTitle;
 		this.bookAuthor = bookAuthor;
@@ -26,11 +27,11 @@ public class Book {
 		this.publicationYear = publicationYear;
 	}
 
-	public int getBookId() {
+	public Integer getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(int bookId) {
+	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
 	}
 
@@ -50,11 +51,11 @@ public class Book {
 		this.bookAuthor = bookAuthor;
 	}
 
-	public double getIsbn() {
+	public Double getIsbn() {
 		return isbn;
 	}
 
-	public void setIsbn(double isbn) {
+	public void setIsbn(Double isbn) {
 		this.isbn = isbn;
 	}
 
