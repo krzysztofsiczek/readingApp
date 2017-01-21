@@ -2,6 +2,6 @@ package readingProject;
 
 public interface RetrieveData {
 
-	Object read();
+	Object[][] read();
 	
 }

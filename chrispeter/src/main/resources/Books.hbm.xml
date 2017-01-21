@@ -10,9 +10,6 @@
 		<property name="bookAuthor" type="java.lang.String">
 			<column name="BOOKAUTHOR" />
 		</property>
-		<property name="isbn" type="java.lang.Double">
-			<column name="ISBN" />
-		</property>
 		<property name="genre" type="java.lang.String">
 			<column name="GENRE" />
 		</property>
@@ -21,7 +18,7 @@
 		</property>
 		<set name="interactions" cascade="save-update" table="INTERACTIONS">
 			<key>
-			<column name="BOOKID" not-null="true" />
+				<column name="BOOKID" not-null="true" />
 			</key>
 			<one-to-many class="readingProject.Interactions" />
 		</set>

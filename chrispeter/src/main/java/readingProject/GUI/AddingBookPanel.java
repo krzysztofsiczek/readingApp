@@ -22,6 +22,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import readingProject.Book;
+import readingProject.Books;
 import readingProject.BooksUsersId;
 import readingProject.Interactions;
 import readingProject.SessionFactoryInstance;
@@ -44,18 +45,15 @@ public class AddingBookPanel extends JPanel {
 
 	private BasicTextArea bookTitleField;
 	private BasicTextArea bookAuthorField;
-	private BasicTextArea bookIsbnField;
 	private BasicTextArea genreField;
 	private BasicTextArea publicationYearField;
 
 	private JLabel addBookTitleLabel;
 	private JLabel addBookAuthorLabel;
-	private JLabel addBookIsbnLabel;
 	private JLabel addGenreLabel;
 	private JLabel addPublicationYearLabel;
 
-	private String plainTextPattern = "^[a-zA-Z0-9_ '.]{0,50}$";
-	private String isbnPattern = "^[0-9]{10}||[0-9]{13}$";
+	private String plainTextPattern = "^[a-zA-Z0-9_ '.,:]{0,50}$";
 	private String yearsPattern = "([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|1[0-9]{3}|200[0-9]|201[0-7])";
 
 	private BasicRadioButton ifHasRead;
@@ -84,7 +82,6 @@ public class AddingBookPanel extends JPanel {
 	private void addComponents() {
 		addBookTitleLabel = new BasicLabel("Book title:");
 		addBookAuthorLabel = new BasicLabel("Book author:");
-		addBookIsbnLabel = new BasicLabel("ISBN:");
 		addGenreLabel = new BasicLabel("Genre:");
 		addPublicationYearLabel = new BasicLabel("Publication year:");
 
@@ -95,10 +92,6 @@ public class AddingBookPanel extends JPanel {
 		bookAuthorField = new BasicTextArea();
 		bookAuthorField.getDocument().addDocumentListener(new BookDocumentListener(bookAuthorField));
 		bookAuthorField.addFocusListener(new BookFocusListener(bookAuthorField));
-
-		bookIsbnField = new BasicTextArea();
-		bookIsbnField.getDocument().addDocumentListener(new BookDocumentListener(bookIsbnField));
-		bookIsbnField.addFocusListener(new BookFocusListener(bookIsbnField));
 
 		genreField = new BasicTextArea();
 		genreField.getDocument().addDocumentListener(new BookDocumentListener(genreField));
@@ -116,9 +109,6 @@ public class AddingBookPanel extends JPanel {
 
 		basicPanelMiddle.add(addBookAuthorLabel);
 		basicPanelMiddle.add(bookAuthorField);
-
-		basicPanelMiddle.add(addBookIsbnLabel);
-		basicPanelMiddle.add(bookIsbnField);
 
 		basicPanelMiddle.add(addGenreLabel);
 		basicPanelMiddle.add(genreField);
@@ -221,29 +211,27 @@ public class AddingBookPanel extends JPanel {
 							JOptionPane.showMessageDialog(getParent(), "Thank you for adding a new book.", "Book added",
 									JOptionPane.PLAIN_MESSAGE);
 
-							Book bookToBeAdded = new Book();
+							Books bookToBeAdded = new Books();
 
-							String isbnToBeAdded = bookIsbnField.getText();
 							bookToBeAdded.setBookTitle(bookTitleField.getText());
 							bookToBeAdded.setBookAuthor(bookAuthorField.getText());
-							bookToBeAdded.setIsbn((Double.parseDouble(isbnToBeAdded)));
 							bookToBeAdded.setGenre(genreField.getText());
 							bookToBeAdded.setPublicationYear(Integer.parseInt(publicationYearField.getText()));
 
 							StoreBookData storeBookData = new StoreBookData(bookToBeAdded);
 							Integer bookId = storeBookData.saveAndRetrieveId();
 							Integer userId = UserSessionInstance.getUserSessionInstance();
-							
+
 							Interactions interactionToBeAdded = new Interactions();
 							BooksUsersId wynik = interactionToBeAdded.getId();
 							System.out.println(wynik);
-							
+
 							StoreData storeInteractionsData = new StoreInteractionsData(interactionToBeAdded);
 							storeInteractionsData.save();
-							
+
 							System.out.println(userId + " przerwa i zaraz book id " + bookId);
-							JOptionPane.showMessageDialog(getParent(),"Thank you for adding the book.",
-									"Book added", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(getParent(), "Thank you for adding the book.", "Book added",
+									JOptionPane.WARNING_MESSAGE);
 							DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
 							basicFrame.getContentPane().removeAll();
 							basicFrame.add(decisionPanel);
@@ -295,8 +283,6 @@ public class AddingBookPanel extends JPanel {
 		if (bookTitleField == textAreaToBeValidated || bookAuthorField == textAreaToBeValidated
 				|| genreField == textAreaToBeValidated) {
 			plainText = Pattern.compile(plainTextPattern);
-		} else if (bookIsbnField == textAreaToBeValidated) {
-			plainText = Pattern.compile(isbnPattern);
 		} else if (publicationYearField == textAreaToBeValidated) {
 			plainText = Pattern.compile(yearsPattern);
 		}

@@ -13,10 +13,10 @@ public class StoreBookData implements StoreData {
 	private Session session;
 	private Transaction transaction;
 	private Books books;
-	private Book bookToBeAdded;
+	private Books bookToBeAdded;
 	private Integer bookId;
 
-	public StoreBookData(Book bookToBeAdded) {
+	public StoreBookData(Books bookToBeAdded) {
 		this.bookToBeAdded = bookToBeAdded;
 	}
 
@@ -50,7 +50,6 @@ public class StoreBookData implements StoreData {
 		books = new Books();
 		books.setBookTitle(bookToBeAdded.getBookTitle());
 		books.setBookAuthor(bookToBeAdded.getBookAuthor());
-		books.setIsbn(bookToBeAdded.getIsbn());
 		books.setGenre(bookToBeAdded.getGenre());
 		books.setPublicationYear(bookToBeAdded.getPublicationYear());
 		session.persist(books);

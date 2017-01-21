@@ -7,19 +7,17 @@ public class Books {
 
 	private Integer bookId;
 	private int publicationYear;
-	private double isbn;
 	private String bookTitle, bookAuthor, genre;
 	private Set<Interactions> interactions = new HashSet<Interactions>();
 
 	public Books() {
 	};
 
-	public Books(Integer bookId, String bookTitle, String bookAuthor, double isbn, String genre,
-			int publicationYear, Set<Interactions> interactions) {
+	public Books(Integer bookId, String bookTitle, String bookAuthor, String genre, int publicationYear,
+			Set<Interactions> interactions) {
 		this.bookId = bookId;
 		this.bookTitle = bookTitle;
 		this.bookAuthor = bookAuthor;
-		this.isbn = isbn;
 		this.genre = genre;
 		this.publicationYear = publicationYear;
 		this.interactions = interactions;
@@ -47,14 +45,6 @@ public class Books {
 
 	public void setBookAuthor(String bookAuthor) {
 		this.bookAuthor = bookAuthor;
-	}
-
-	public double getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(double isbn) {
-		this.isbn = isbn;
 	}
 
 	public String getGenre() {
