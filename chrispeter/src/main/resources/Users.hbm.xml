@@ -1,22 +1,22 @@
 <hibernate-mapping>
 	<class name="readingProject.Users" table="USERS">
-		<id name="userId" type="int">
+		<id name="userId" type="java.lang.Integer">
 			<column name="USERID" />
 			<generator class="increment" />
 		</id>
-		<property name="userName" type="java.lang.String">
+		<property name="userName" length="30" type="java.lang.String">
 			<column name="USERNAME" />
 		</property>
-		<property name="email" type="java.lang.String">
+		<property name="email" unique="true" type="java.lang.String">
 			<column name="EMAIL" />
 		</property>
-		<property name="password" type="java.lang.String">
+		<property name="password" length="30" type="java.lang.String">
 			<column name="PASSWORD" />
 		</property>
 		<property name="userSince" type="java.time.LocalDateTime">
 			<column name="USERSINCE" />
 		</property>
-		<set name="interactions" cascade="save-update" table="INTERACTIONS">
+		<set name="interactions" cascade="save-update" lazy="false" table="INTERACTIONS">
 			<key>
 				<column name="USERID" not-null="true" />
 			</key>

@@ -21,15 +21,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import readingProject.Book;
 import readingProject.Books;
-import readingProject.BooksUsersId;
 import readingProject.Interactions;
-import readingProject.SessionFactoryInstance;
 import readingProject.StoreBookData;
-import readingProject.StoreData;
-import readingProject.StoreInteractionsData;
-import readingProject.UserSessionInstance;
+import readingProject.UserInstance;
+import readingProject.Users;
 
 public class AddingBookPanel extends JPanel {
 
@@ -53,8 +49,8 @@ public class AddingBookPanel extends JPanel {
 	private JLabel addGenreLabel;
 	private JLabel addPublicationYearLabel;
 
-	private String plainTextPattern = "^[a-zA-Z0-9_ '.,:]{0,50}$";
-	private String yearsPattern = "([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|1[0-9]{3}|200[0-9]|201[0-7])";
+	private static final String plainTextPattern = "^[a-zA-Z0-9_ '.-/,:]{0,50}$";
+	private static final String yearsPattern = "([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|1[0-9]{3}|200[0-9]|201[0-7])";
 
 	private BasicRadioButton ifHasRead;
 	private BasicRadioButton ifHasGot;
@@ -101,7 +97,7 @@ public class AddingBookPanel extends JPanel {
 		publicationYearField.getDocument().addDocumentListener(new BookDocumentListener(publicationYearField));
 		publicationYearField.addFocusListener(new BookFocusListener(publicationYearField));
 
-		basicPanelMiddle = new BasicPanelGrid(5, 2, 0, 5);
+		basicPanelMiddle = new BasicPanelGrid(4, 2, 0, 5);
 		basicPanelMiddle.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		basicPanelMiddle.add(addBookTitleLabel);
@@ -128,7 +124,7 @@ public class AddingBookPanel extends JPanel {
 		basicErrorLabel.setForeground(Color.LIGHT_GRAY);
 
 		basicPanelRight.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		basicPanelRight.add(Box.createVerticalStrut(45));
+		basicPanelRight.add(Box.createVerticalStrut(43));
 		basicPanelRight.add(basicErrorLabel);
 		basicPanelRight.add(Box.createRigidArea(new Dimension(0, 18)));
 		basicPanelRight.add(submitButton);
@@ -149,15 +145,11 @@ public class AddingBookPanel extends JPanel {
 					invisibleButton.setSelected(true);
 					selectedCountHasBook = 0;
 				}
-
-				// TODO adding data to interactions table
-
 			}
 		});
 
 		ifHasRead.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO adding data to interactions table
 			}
 		});
 
@@ -169,8 +161,6 @@ public class AddingBookPanel extends JPanel {
 					invisibleButton.setSelected(true);
 					selectedCountWantsToBuyBook = 0;
 				}
-
-				// TODO adding data to interactions table
 			}
 		});
 
@@ -208,33 +198,39 @@ public class AddingBookPanel extends JPanel {
 				public void run() {
 					if (submitButton == (JButton) e.getSource()) {
 						if (isUserInputCorrect == true && isBookTitleCorrect == true) {
-							JOptionPane.showMessageDialog(getParent(), "Thank you for adding a new book.", "Book added",
-									JOptionPane.PLAIN_MESSAGE);
+							boolean isUserInteractionInputCorrect;
+							isUserInteractionInputCorrect = validateUserInteractionsInput();
+							if (isUserInteractionInputCorrect) {
+								Books bookToBeAdded = new Books();
+								bookToBeAdded.setBookTitle(bookTitleField.getText());
+								bookToBeAdded.setBookAuthor(bookAuthorField.getText());
+								bookToBeAdded.setGenre(genreField.getText());
+								bookToBeAdded.setPublicationYear(Integer.parseInt(publicationYearField.getText()));
 
-							Books bookToBeAdded = new Books();
+								StoreBookData storeBookData = new StoreBookData(bookToBeAdded);
+								Users activeUser = UserInstance.getUserInstance();
 
-							bookToBeAdded.setBookTitle(bookTitleField.getText());
-							bookToBeAdded.setBookAuthor(bookAuthorField.getText());
-							bookToBeAdded.setGenre(genreField.getText());
-							bookToBeAdded.setPublicationYear(Integer.parseInt(publicationYearField.getText()));
+								Interactions interactionToBeAdded = new Interactions();
+								interactionToBeAdded.setBooks(bookToBeAdded);
+								interactionToBeAdded.setUsers(activeUser);
+								interactionToBeAdded.setHasGot(ifHasGot.isSelected());
+								interactionToBeAdded.setHasRead(ifHasRead.isSelected());
+								interactionToBeAdded.setWantsToBuy(ifWantsToBuy.isSelected());
 
-							StoreBookData storeBookData = new StoreBookData(bookToBeAdded);
-							Integer bookId = storeBookData.saveAndRetrieveId();
-							Integer userId = UserSessionInstance.getUserSessionInstance();
+								bookToBeAdded.addInteractions(interactionToBeAdded);
+								storeBookData.save();
 
-							Interactions interactionToBeAdded = new Interactions();
-							BooksUsersId wynik = interactionToBeAdded.getId();
-							System.out.println(wynik);
+								JOptionPane.showMessageDialog(getParent(), "Thank you for adding a new book.",
+										"Book added", JOptionPane.PLAIN_MESSAGE);
+								DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
+								basicFrame.getContentPane().removeAll();
+								basicFrame.add(decisionPanel);
+							} else {
+								JOptionPane.showMessageDialog(getParent(),
+										"Enter correct information for your book. Remember that at least one of the check boxes needs to be checked.",
+										"Incorrect data", JOptionPane.WARNING_MESSAGE);
+							}
 
-							StoreData storeInteractionsData = new StoreInteractionsData(interactionToBeAdded);
-							storeInteractionsData.save();
-
-							System.out.println(userId + " przerwa i zaraz book id " + bookId);
-							JOptionPane.showMessageDialog(getParent(), "Thank you for adding the book.", "Book added",
-									JOptionPane.WARNING_MESSAGE);
-							DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
-							basicFrame.getContentPane().removeAll();
-							basicFrame.add(decisionPanel);
 						} else {
 							JOptionPane.showMessageDialog(getParent(),
 									"Enter correct information for your book. Remember that book title is required.",
@@ -320,5 +316,16 @@ public class AddingBookPanel extends JPanel {
 				textAreaToBeValidated.setText("");
 			}
 		}
+	}
+
+	private boolean validateUserInteractionsInput() {
+		if (ifHasRead.isSelected()) {
+			return true;
+		} else if (ifHasGot.isSelected()) {
+			return true;
+		} else if (ifWantsToBuy.isSelected()) {
+			return true;
+		}
+		return false;
 	}
 }

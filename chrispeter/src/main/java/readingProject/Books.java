@@ -5,22 +5,19 @@ import java.util.Set;
 
 public class Books {
 
-	private Integer bookId;
-	private int publicationYear;
+	private Integer bookId, publicationYear;
 	private String bookTitle, bookAuthor, genre;
+
 	private Set<Interactions> interactions = new HashSet<Interactions>();
 
 	public Books() {
 	};
 
-	public Books(Integer bookId, String bookTitle, String bookAuthor, String genre, int publicationYear,
-			Set<Interactions> interactions) {
-		this.bookId = bookId;
+	public Books(String bookTitle, String bookAuthor, String genre, int publicationYear) {
 		this.bookTitle = bookTitle;
 		this.bookAuthor = bookAuthor;
 		this.genre = genre;
 		this.publicationYear = publicationYear;
-		this.interactions = interactions;
 	}
 
 	public Integer getBookId() {
@@ -55,11 +52,11 @@ public class Books {
 		this.genre = genre;
 	}
 
-	public int getPublicationYear() {
+	public Integer getPublicationYear() {
 		return publicationYear;
 	}
 
-	public void setPublicationYear(int publicationYear) {
+	public void setPublicationYear(Integer publicationYear) {
 		this.publicationYear = publicationYear;
 	}
 
@@ -70,4 +67,8 @@ public class Books {
 	public void setInteractions(Set<Interactions> interactions) {
 		this.interactions = interactions;
 	}
+	
+	public void addInteractions(Interactions interactionToBeAdded) {
+		this.interactions.add(interactionToBeAdded);	
+	}	
 }

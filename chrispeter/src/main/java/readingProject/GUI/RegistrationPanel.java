@@ -19,7 +19,7 @@ import readingProject.CheckData;
 import readingProject.CheckWhetherUserExists;
 import readingProject.StoreData;
 import readingProject.StoreUserData;
-import readingProject.User;
+import readingProject.Users;
 import readingProject.ZonedTime;
 
 public class RegistrationPanel extends JPanel {
@@ -41,10 +41,10 @@ public class RegistrationPanel extends JPanel {
 
 	private BasicPanelGrid dataInputPanel;
 
-	private boolean isDataCorrect;
-	private boolean doesUserAlreadyExist;
+	private boolean isDataCorrect = false;
+	private boolean doesUserAlreadyExist = false;
 
-	private User userToBeAdded;
+	private Users userToBeAdded;
 
 	private String plainTextPattern = "^[a-zA-Z0-9_ ]{0,30}$";
 
@@ -119,27 +119,31 @@ public class RegistrationPanel extends JPanel {
 						validateRegistrationData();
 						if (isDataCorrect == true) {
 							String emailToBeAdded = userEmail.getText();
-							doesUserAlreadyExist = false;
 							CheckData checkWhetherUserExists = new CheckWhetherUserExists(emailToBeAdded);
-							doesUserAlreadyExist = checkWhetherUserExists.check();
+							Integer exisitingUserId = checkWhetherUserExists.check();
+							if (exisitingUserId != null) {
+								doesUserAlreadyExist = true;
+							}
 							if (doesUserAlreadyExist == true) {
 								JOptionPane.showMessageDialog(getParent(),
 										"A user with this e-mail is already registered.", "User already exists",
 										JOptionPane.WARNING_MESSAGE);
 							} else {
-								JOptionPane.showMessageDialog(getParent(), "Thank you for registering with us.",
-										"User registered", JOptionPane.PLAIN_MESSAGE);
 								ZonedTime zonedTime = new ZonedTime();
 								userRegistrationDateTime = zonedTime.checkCurrentDateTimeBeforePassingToDatabase();
-								userToBeAdded = new User();
+								userToBeAdded = new Users();
 								userToBeAdded.setUserName(userName.getText());
 								userToBeAdded.setEmail(userEmail.getText());
 								userToBeAdded.setPassword(new String(userPassword.getPassword()));
 								userToBeAdded.setUserSince(userRegistrationDateTime);
 
 								StoreData storeUserData = new StoreUserData(userToBeAdded);
-								storeUserData.save();
+								Integer newUserId = storeUserData.save();
 
+								if (newUserId >= 0) {
+									JOptionPane.showMessageDialog(getParent(), "Thank you for registering with us.",
+											"User registered", JOptionPane.PLAIN_MESSAGE);
+								}
 								LoginPanel loginPanel = new LoginPanel(basicFrame);
 								basicFrame.getContentPane().removeAll();
 								basicFrame.add(loginPanel);
@@ -157,7 +161,6 @@ public class RegistrationPanel extends JPanel {
 
 	private void validateRegistrationData() {
 
-		isDataCorrect = false;
 		Pattern plainText = null;
 		plainText = Pattern.compile(plainTextPattern);
 		boolean isEmailValid;
@@ -169,18 +172,13 @@ public class RegistrationPanel extends JPanel {
 		Matcher userNameMatcher = plainText.matcher(userNameToBeCompared);
 
 		if (userNameMatcher.matches()) {
-			isDataCorrect = true;
 			isEmailValid = EmailValidator.getInstance().isValid(emailToBeCompared);
 			if (isEmailValid == true) {
 				Matcher passwordMatcher = plainText.matcher(passwordToBeCompared);
-				if (!passwordMatcher.matches()) {
-					isDataCorrect = false;
+				if (passwordMatcher.matches()) {
+					isDataCorrect = true;
 				}
-			} else if (isEmailValid == false) {
-				isDataCorrect = false;
 			}
-		} else {
-			isDataCorrect = false;
 		}
 	}
 }

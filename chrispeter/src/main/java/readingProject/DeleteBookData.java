@@ -4,25 +4,24 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-public class StoreBookData implements StoreData {
+public class DeleteBookData implements DeleteData {
 
 	private SessionFactory sessionFactory;
 	private Session session;
 	private Transaction transaction;
-	private Books bookToBeAdded;
 	private Integer bookId;
+	private Books bookToBeDeleted;
 
-	public StoreBookData(Books bookToBeAdded) {
-		this.bookToBeAdded = bookToBeAdded;
+	public DeleteBookData(Integer bookId) {
+		this.bookId = bookId;
 	}
 
 	@Override
-	public Integer save() {
+	public void delete(Integer bookId) {
 		getSessionFactoryInstance();
 		startSession();
-		insertDataIntoDatabase();
+		deleteDataFromDatabase();
 		closeSession();
-		return bookId;
 	}
 
 	private void getSessionFactoryInstance() {
@@ -34,8 +33,9 @@ public class StoreBookData implements StoreData {
 		transaction = session.beginTransaction();
 	}
 
-	private void insertDataIntoDatabase() {
-		bookId = (Integer) session.save(bookToBeAdded);
+	private void deleteDataFromDatabase() {
+		bookToBeDeleted = (Books) session.get(Books.class, bookId);
+		session.delete(bookToBeDeleted);
 	}
 
 	private void closeSession() {

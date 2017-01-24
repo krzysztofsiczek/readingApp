@@ -19,7 +19,7 @@ import javax.swing.SwingUtilities;
 
 import readingProject.CheckData;
 import readingProject.CheckUserLoginData;
-import readingProject.UserSessionInstance;
+import readingProject.UserInstance;
 
 public class LoginPanel extends JPanel {
 
@@ -90,7 +90,6 @@ public class LoginPanel extends JPanel {
 		parentPanel.add(inputPanel, BorderLayout.CENTER);
 		parentPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-
 		this.add(parentPanel);
 	}
 
@@ -107,6 +106,7 @@ public class LoginPanel extends JPanel {
 						basicFrame.validate();
 					} else if (loginButton == e.getSource()) {
 						validateLoginData();
+						//isLoginDataCorrect = true;
 						if (isLoginDataCorrect == true) {
 							DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
 							basicFrame.getContentPane().removeAll();
@@ -124,14 +124,13 @@ public class LoginPanel extends JPanel {
 	}
 
 	private void validateLoginData() {
-
 		String userEmailToBeCompared = userEmail.getText();
 		String passwordToBeCompared = new String(userPassword.getPassword());
 		CheckData checkUserLoginData = new CheckUserLoginData(userEmailToBeCompared, passwordToBeCompared);
-		isLoginDataCorrect = checkUserLoginData.check();
-		if (isLoginDataCorrect == true) {
-			userId = UserSessionInstance.getUserSessionInstance(userEmailToBeCompared);
-			System.out.println("numer identyfikujacy usera to " + userId);
+		userId = checkUserLoginData.check();
+		if (userId != null) {
+			isLoginDataCorrect = true;
+			UserInstance.setUserId(userId);
 		}
 	}
 }

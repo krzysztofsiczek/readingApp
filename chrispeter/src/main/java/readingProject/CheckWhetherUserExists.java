@@ -1,5 +1,6 @@
 package readingProject;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -13,19 +14,19 @@ public class CheckWhetherUserExists implements CheckData {
 	private Session session;
 	private Transaction transaction;
 	private String emailToBeAdded;
-	private boolean doesUserExist;
+	private Integer userId;
 
 	public CheckWhetherUserExists(String emailToBeAdded) {
 		this.emailToBeAdded = emailToBeAdded;
 	}
 
 	@Override
-	public boolean check() {
+	public Integer check() {
 		getSessionFactoryInstance();
 		startSession();
 		checkUserLoginData();
 		closeSession();
-		return doesUserExist;
+		return userId;
 	}
 
 	private void getSessionFactoryInstance() {
@@ -39,12 +40,14 @@ public class CheckWhetherUserExists implements CheckData {
 
 	private void checkUserLoginData() {
 		String checkingWhetherUserExists = "FROM Users WHERE email= :email";
-		Query<User> query = session.createQuery(checkingWhetherUserExists);
+		Query<Users> query = session.createQuery(checkingWhetherUserExists);
 		query.setParameter("email", emailToBeAdded);
-		List<User> result = query.getResultList();
-		boolean wynik = result.isEmpty();
-		if (wynik != true) {
-			doesUserExist = true;
+		List<Users> result = query.getResultList();
+
+		if (!(result.isEmpty())) {
+			Iterator<Users> iterator = result.iterator();
+			Users user = iterator.next();
+			userId = user.getUserId();
 		}
 	}
 

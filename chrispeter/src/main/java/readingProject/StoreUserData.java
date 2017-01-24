@@ -9,19 +9,20 @@ public class StoreUserData implements StoreData {
 	private SessionFactory sessionFactory;
 	private Session session;
 	private Transaction transaction;
-	private Users users;
-	private User userToBeAdded;
+	private Users userToBeAdded;
+	private Integer userId;
 
-	public StoreUserData(User user) {
-		this.userToBeAdded = user;
+	public StoreUserData(Users userToBeAdded) {
+		this.userToBeAdded = userToBeAdded;
 	}
 
 	@Override
-	public void save() {
+	public Integer save() {
 		getSessionFactoryInstance();
 		startSession();
 		insertDataIntoDatabase();
 		closeSession();
+		return userId;
 	}
 
 	private void getSessionFactoryInstance() {
@@ -34,12 +35,7 @@ public class StoreUserData implements StoreData {
 	}
 
 	private void insertDataIntoDatabase() {
-		users = new Users();
-		users.setUserName(userToBeAdded.getUserName());
-		users.setEmail(userToBeAdded.getEmail());
-		users.setPassword(userToBeAdded.getPassword());
-		session.persist(users);
-		System.out.println("uzytkownik dodany.");
+		userId = (Integer) session.save(userToBeAdded);
 	}
 
 	private void closeSession() {

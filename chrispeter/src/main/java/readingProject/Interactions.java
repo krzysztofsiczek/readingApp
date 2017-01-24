@@ -21,8 +21,8 @@ public class Interactions {
 		return getId().getBooks();
 	}
 
-	public void setBooks(Books bookId) {
-		getId().setBooks(bookId);
+	public void setBooks(Books books) {
+		getId().setBooks(books);
 	}
 
 	public Users getUsers() {

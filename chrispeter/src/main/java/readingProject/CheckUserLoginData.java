@@ -1,5 +1,6 @@
 package readingProject;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,7 +15,7 @@ public class CheckUserLoginData implements CheckData {
 	private Transaction transaction;
 	private String userEmailToBeCompared;
 	private String passwordToBeCompared;
-	private boolean isUserLoginDataCorrect;
+	private Integer userId;
 
 	public CheckUserLoginData(String userEmailToBeCompared, String passwordToBeCompared) {
 		this.userEmailToBeCompared = userEmailToBeCompared;
@@ -22,14 +23,14 @@ public class CheckUserLoginData implements CheckData {
 	}
 
 	@Override
-	public boolean check() {
+	public Integer check() {
 		getSessionFactoryInstance();
 		startSession();
 		checkUserLoginData();
 		closeSession();
-		return isUserLoginDataCorrect;
+		return userId;
 	}
-	
+
 	private void getSessionFactoryInstance() {
 		sessionFactory = SessionFactoryInstance.getSessionFactoryInstance();
 	}
@@ -41,13 +42,15 @@ public class CheckUserLoginData implements CheckData {
 
 	private void checkUserLoginData() {
 		String checkingLoginData = "FROM Users WHERE email= :email AND password= :password";
-		Query<User> query = session.createQuery(checkingLoginData);
+		Query<Users> query = session.createQuery(checkingLoginData);
 		query.setParameter("email", userEmailToBeCompared);
 		query.setParameter("password", passwordToBeCompared);
-		List<User> result = query.getResultList();
-		boolean wynik = result.isEmpty();
-		if (wynik != true) {
-			isUserLoginDataCorrect = true;
+		List<Users> result = query.getResultList();
+
+		if (!(result.isEmpty())) {
+			Iterator<Users> iterator = result.iterator();
+			Users user = iterator.next();
+			userId = user.getUserId();
 		}
 	}
 

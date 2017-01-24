@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-public class RetrieveBookData implements RetrieveData {
+public class RetrieveInteractions implements RetrieveData {
 
 	private static final int NUMBEROFCOLUMNS = 5;
 	private SessionFactory sessionFactory;
@@ -15,7 +15,7 @@ public class RetrieveBookData implements RetrieveData {
 	private Transaction transaction;
 	private Object[][] dataToBeRetrieved;
 
-	public RetrieveBookData() {
+	public RetrieveInteractions() {
 	}
 
 	@Override
@@ -37,21 +37,19 @@ public class RetrieveBookData implements RetrieveData {
 	}
 
 	private void retrieveDataFromDatabase() {
-
 		Users currentUser = UserInstance.getUserInstance();
 		Set<Interactions> interactions = currentUser.getInteractions();
-		
+
 		int count = 0;
 		dataToBeRetrieved = new Object[interactions.size()][NUMBEROFCOLUMNS];
 
 		for (Iterator<Interactions> iterator = interactions.iterator(); iterator.hasNext();) {
-			Interactions currentInteraction = iterator.next();
-			Books book = currentInteraction.getBooks();
-			dataToBeRetrieved[count][0] = book.getBookId();
-			dataToBeRetrieved[count][1] = book.getBookTitle();
-			dataToBeRetrieved[count][2] = book.getBookAuthor();
-			dataToBeRetrieved[count][3] = book.getGenre();
-			dataToBeRetrieved[count][4] = book.getPublicationYear();
+			Interactions interactionsToBeRetrieved = iterator.next();
+			dataToBeRetrieved[count][0] = interactionsToBeRetrieved.getBooks();
+			dataToBeRetrieved[count][1] = interactionsToBeRetrieved.getUsers();
+			dataToBeRetrieved[count][2] = interactionsToBeRetrieved.getHasGot();
+			dataToBeRetrieved[count][3] = interactionsToBeRetrieved.getHasRead();
+			dataToBeRetrieved[count][4] = interactionsToBeRetrieved.getWantsToBuy();
 			count++;
 		}
 	}

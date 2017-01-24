@@ -6,28 +6,27 @@ import java.util.Set;
 
 public class Users {
 
-	private int userId;
+	private Integer userId;
 	private String userName, email, password;
 	private LocalDateTime userSince;
+
 	private Set<Interactions> interactions = new HashSet<Interactions>();
 
 	public Users() {
-	};
+	}
 
-	public Users(int userId, String userName, String email, String password, LocalDateTime userSince, Set<Interactions> interactions) {
-		this.userId = userId;
+	public Users(String userName, String email, String password, LocalDateTime userSince) {
 		this.userName = userName;
 		this.email = email;
 		this.password = password;
 		this.userSince = userSince;
-		this.interactions = interactions;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -69,5 +68,9 @@ public class Users {
 
 	public void setInteractions(Set<Interactions> interactions) {
 		this.interactions = interactions;
+	}
+
+	public void addInteraction(Interactions interactionToBeAdded) {
+		this.interactions.add(interactionToBeAdded);
 	}
 }

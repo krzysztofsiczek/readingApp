@@ -1,5 +1,6 @@
 package readingProject;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -7,34 +8,34 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-public class UserSessionInstance {
+public class UserInstance {
 
 	private static Integer userId;
+	private static Users users;
 	private static SessionFactory sessionFactory;
 	private static Session session;
 	private static Transaction transaction;
 
-	private UserSessionInstance() {
+	private UserInstance() {
 	}
 
-	public static Integer getUserSessionInstance(String emailToBeComapred) {
-		if (userId == null) {
-			userId = createUserSessionInstance(emailToBeComapred);
+	public static Users getUserInstance() {
+		if (users == null) {
+			users = getCurrentUsers(userId);
 		}
-		return userId;
-	}
-
-	public static Integer getUserSessionInstance() {
-		return userId;
+		return users;
 	}
 	
-	private static Integer createUserSessionInstance(String emailToBeComapred) {
+	public static void setUserId(Integer userId){
+		UserInstance.userId = userId;
+	}
+
+	private static Users getCurrentUsers(Integer userId) {
 		getSessionFactoryInstance();
 		startSession();
-		checkUserId(emailToBeComapred);
+		getUsers(userId);
 		closeSession();
-		return userId;
-
+		return users;
 	}
 
 	private static void getSessionFactoryInstance() {
@@ -46,13 +47,14 @@ public class UserSessionInstance {
 		transaction = session.beginTransaction();
 	}
 
-	private static void checkUserId(String emailToBeComapred) {
-		String checkingUserId = "SELECT U.userId From Users U WHERE U.email= :email";
-		Query<Integer> query = session.createQuery(checkingUserId);
-		query.setParameter("email", emailToBeComapred);
-		List<Integer> result = query.getResultList();
+	private static void getUsers(Integer userId) {
+		String checkingUsers = "From Users U WHERE U.userId= :userId";
+		Query<Users> query = session.createQuery(checkingUsers);
+		query.setParameter("userId", userId);
+		List<Users> result = query.getResultList();
 		if (!(result.isEmpty())) {
-			userId = result.get(0);
+			Iterator<Users> iterator = result.iterator();
+			users = iterator.next();
 		}
 	}
 
