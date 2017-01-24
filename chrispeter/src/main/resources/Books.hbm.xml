@@ -16,7 +16,7 @@
 		<property name="publicationYear" type="java.lang.Integer">
 			<column name="PUBLICATIONYEAR" />
 		</property>
-		<set name="interactions" cascade="save-update" lazy="false" table="INTERACTIONS">
+		<set name="interactions" cascade="save-update" lazy="true" table="INTERACTIONS">
 			<key>
 				<column name="BOOKID" not-null="true" />
 			</key>

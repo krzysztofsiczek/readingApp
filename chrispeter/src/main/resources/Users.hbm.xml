@@ -16,7 +16,7 @@
 		<property name="userSince" type="java.time.LocalDateTime">
 			<column name="USERSINCE" />
 		</property>
-		<set name="interactions" cascade="save-update" lazy="false" table="INTERACTIONS">
+		<set name="interactions" cascade="save-update" lazy="true" table="INTERACTIONS">
 			<key>
 				<column name="USERID" not-null="true" />
 			</key>

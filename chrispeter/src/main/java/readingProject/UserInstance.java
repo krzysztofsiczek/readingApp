@@ -25,8 +25,12 @@ public class UserInstance {
 		}
 		return users;
 	}
-	
-	public static void setUserId(Integer userId){
+
+	public static Integer getUserId() {
+		return userId;
+	}
+
+	public static void setUserId(Integer userId) {
 		UserInstance.userId = userId;
 	}
 

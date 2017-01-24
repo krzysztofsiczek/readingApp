@@ -1,11 +1,13 @@
 package readingProject;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 public class RetrieveInteractions implements RetrieveData {
 
@@ -13,6 +15,7 @@ public class RetrieveInteractions implements RetrieveData {
 	private SessionFactory sessionFactory;
 	private Session session;
 	private Transaction transaction;
+	private Users currentUser;
 	private Object[][] dataToBeRetrieved;
 
 	public RetrieveInteractions() {
@@ -37,7 +40,17 @@ public class RetrieveInteractions implements RetrieveData {
 	}
 
 	private void retrieveDataFromDatabase() {
-		Users currentUser = UserInstance.getUserInstance();
+		Integer userId = UserInstance.getUserId();
+		String checkingUsers = "From Users U WHERE U.userId= :userId";
+		Query<Users> query = session.createQuery(checkingUsers);
+		query.setParameter("userId", userId);
+		List<Users> result = query.getResultList();
+
+		if (!(result.isEmpty())) {
+			Iterator<Users> iterator = result.iterator();
+			currentUser = iterator.next();
+		}
+
 		Set<Interactions> interactions = currentUser.getInteractions();
 
 		int count = 0;

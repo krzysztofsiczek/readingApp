@@ -4,15 +4,18 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-public class DeleteBookData implements DeleteData {
+public class DeleteInteractionsData implements DeleteData {
 
 	private SessionFactory sessionFactory;
 	private Session session;
 	private Transaction transaction;
 	private Integer bookId;
 	private Books bookToBeDeleted;
+	private Integer userId;
+	private Users currentUser;
+	private Interactions interactionToBeDeleted;
 
-	public DeleteBookData() {
+	public DeleteInteractionsData() {
 	}
 
 	@Override
@@ -34,8 +37,15 @@ public class DeleteBookData implements DeleteData {
 	}
 
 	private void deleteDataFromDatabase() {
+		userId = UserInstance.getUserId();
+		currentUser = (Users) session.get(Users.class, userId);
 		bookToBeDeleted = (Books) session.get(Books.class, bookId);
-		session.delete(bookToBeDeleted);
+
+		interactionToBeDeleted = new Interactions();
+		interactionToBeDeleted.setUsers(currentUser);
+		interactionToBeDeleted.setBooks(bookToBeDeleted);
+		
+		session.delete(interactionToBeDeleted);
 	}
 
 	private void closeSession() {

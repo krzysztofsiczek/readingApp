@@ -15,7 +15,7 @@ public class CompleteBookTable {
 		Object[][] bookData = retrieveBookData.read();
 
 		int numberOfRows = bookData.length;
-		completeBookTable = new Object[numberOfRows][8];
+		completeBookTable = new Object[numberOfRows][10];
 
 		int bookCount = 0;
 		int interactionsCount = 0;
@@ -28,6 +28,10 @@ public class CompleteBookTable {
 				completeBookTable[i][x] = interactionsData[interactionsCount][k];
 				x++;
 			}
+			for (int l = 0, y = 8; l < 2; l++) {
+				completeBookTable[i][y] = interactionsData[interactionsCount][l];
+				y++;
+			}			
 			bookCount++;
 			interactionsCount++;
 		}
