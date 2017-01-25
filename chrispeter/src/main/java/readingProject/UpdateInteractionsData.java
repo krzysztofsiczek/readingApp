@@ -12,14 +12,15 @@ public class UpdateInteractionsData implements UpdateData {
 	private Interactions interactionToBeUpdated;
 	private Books books;
 	private Users users;
+	private Integer bookId;
 	private boolean newHasRead, newHasGot, newWantsToBuy;
 
-	public UpdateInteractionsData(Books books, Users users, boolean newHasGot, boolean newHasRead,
+	public UpdateInteractionsData(Integer bookId, Users users, boolean newHasRead, boolean newHasGot,
 			boolean newWantsToBuy) {
-		this.books = books;
+		this.bookId = bookId;
 		this.users = users;
-		this.newHasGot = newHasGot;
 		this.newHasRead = newHasRead;
+		this.newHasGot = newHasGot;
 		this.newWantsToBuy = newWantsToBuy;
 	}
 
@@ -40,12 +41,13 @@ public class UpdateInteractionsData implements UpdateData {
 	}
 
 	private void updateDataInDatabase() {
+		books = (Books) session.get(Books.class, bookId);
 		BooksUsersId bookUserId = new BooksUsersId();
 		bookUserId.setBooks(books);
 		bookUserId.setUsers(users);
 		interactionToBeUpdated = (Interactions) session.get(Interactions.class, bookUserId);
-		interactionToBeUpdated.setHasGot(newHasGot);
 		interactionToBeUpdated.setHasRead(newHasRead);
+		interactionToBeUpdated.setHasGot(newHasGot);
 		interactionToBeUpdated.setWantsToBuy(newWantsToBuy);
 		session.update(interactionToBeUpdated);
 	}

@@ -132,10 +132,15 @@ public class AddingBookPanel extends JPanel {
 		basicPanelRight.add(returnButton);
 
 		radioButtonsGroup = new ButtonGroup();
-		ifHasGot = new BasicRadioButton("I have the book.");
 		ifHasRead = new BasicRadioButton("I have read the book.");
+		ifHasGot = new BasicRadioButton("I have the book.");
 		ifWantsToBuy = new BasicRadioButton("I want to buy the book.");
 		invisibleButton = new BasicRadioButton("");
+
+		ifHasRead.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 
 		ifHasGot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -145,11 +150,6 @@ public class AddingBookPanel extends JPanel {
 					invisibleButton.setSelected(true);
 					selectedCountHasBook = 0;
 				}
-			}
-		});
-
-		ifHasRead.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
@@ -171,8 +171,8 @@ public class AddingBookPanel extends JPanel {
 		JPanel basicPanelBottom = new JPanel();
 		basicPanelBottom.setBackground(Color.LIGHT_GRAY);
 		basicPanelBottom.add(Box.createRigidArea(new Dimension(0, 30)));
-		basicPanelBottom.add(ifHasGot);
 		basicPanelBottom.add(ifHasRead);
+		basicPanelBottom.add(ifHasGot);
 		basicPanelBottom.add(ifWantsToBuy);
 
 		this.add(basicPanelMiddle, BorderLayout.CENTER);
@@ -207,17 +207,17 @@ public class AddingBookPanel extends JPanel {
 								bookToBeAdded.setGenre(genreField.getText());
 								bookToBeAdded.setPublicationYear(Integer.parseInt(publicationYearField.getText()));
 
-								StoreBookData storeBookData = new StoreBookData(bookToBeAdded);
 								Users activeUser = UserInstance.getUserInstance();
 
-								Interactions interactionToBeAdded = new Interactions();
+								Interactions interactionToBeAdded = new Interactions();	
 								interactionToBeAdded.setBooks(bookToBeAdded);
 								interactionToBeAdded.setUsers(activeUser);
-								interactionToBeAdded.setHasGot(ifHasGot.isSelected());
 								interactionToBeAdded.setHasRead(ifHasRead.isSelected());
+								interactionToBeAdded.setHasGot(ifHasGot.isSelected());
 								interactionToBeAdded.setWantsToBuy(ifWantsToBuy.isSelected());
 
 								bookToBeAdded.addInteractions(interactionToBeAdded);
+								StoreBookData storeBookData = new StoreBookData(bookToBeAdded);
 								storeBookData.save();
 
 								JOptionPane.showMessageDialog(getParent(), "Thank you for adding a new book.",

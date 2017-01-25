@@ -8,14 +8,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import readingProject.CompleteBookTable;
+import readingProject.RetrieveBookAndInteractions;
+import readingProject.RetrieveData;
 
 public class BookDataTablePanel extends JPanel implements TableModelListener {
 
@@ -29,7 +28,6 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 	private int columnForChangedData;
 	private TableModel modelForChangedData;
 	private ListSelectionModel listSelectionModel;
-	private Integer bookIdForCurrentRow;
 
 	public BookDataTablePanel() {
 		super(new GridLayout(1, 0));
@@ -45,24 +43,19 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 		this.bookDataTable = bookDataTable;
 	}
 
-	public Integer getBookIdForCurrentRow() {
-		return bookIdForCurrentRow;
+	public BookDataTableModel getBookDataTableModel() {
+		return bookDataTableModel;
+	}
+
+	public void setBookDataTable(BookDataTableModel bookDataTableModel) {
+		BookDataTablePanel.bookDataTableModel = bookDataTableModel;
 	}
 
 	private void createTable() {
-		bookDataTable = new JTable(new BookDataTableModel());
-
-		for (int i = 0, j = 3; i < j; i++) {
-			for (int k = 0, l = 10; k < l; k++) {
-				System.out.print(bookDataTable.getValueAt(i, k) + " ");
-			}
-			System.out.println();
-		}
-		
-		System.out.println("test end");
-		
+		bookDataTableModel = new BookDataTableModel();
+		bookDataTable = new JTable(bookDataTableModel);
 		listSelectionModel = bookDataTable.getSelectionModel();
-		listSelectionModel.addListSelectionListener(new ReadAppListSelectionHandler());
+		listSelectionModel.addListSelectionListener(new ReadAppListSelectionHandler(bookDataTable));
 		listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		bookDataTable.setSelectionModel(listSelectionModel);
 		bookDataTable.setFillsViewportHeight(true);
@@ -75,10 +68,10 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 		bookDataTable.getColumnModel().getColumn(0).setMinWidth(0);
 		bookDataTable.getColumnModel().getColumn(0).setPreferredWidth(0);
 		bookDataTable.getColumnModel().getColumn(0).setWidth(0);
-		bookDataTable.getColumnModel().getColumn(1).setMinWidth(160);
-		bookDataTable.getColumnModel().getColumn(2).setMinWidth(160);
+		bookDataTable.getColumnModel().getColumn(1).setMinWidth(150);
+		bookDataTable.getColumnModel().getColumn(2).setMinWidth(150);
 		bookDataTable.getColumnModel().getColumn(3).setMinWidth(110);
-		bookDataTable.getColumnModel().getColumn(4).setMinWidth(100);
+		bookDataTable.getColumnModel().getColumn(4).setMinWidth(115);
 		bookDataTable.getColumnModel().getColumn(5).setMinWidth(80);
 		bookDataTable.getColumnModel().getColumn(6).setMinWidth(80);
 		bookDataTable.getColumnModel().getColumn(7).setMinWidth(80);
@@ -86,11 +79,6 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 		bookDataTable.getColumnModel().getColumn(8).setMinWidth(0);
 		bookDataTable.getColumnModel().getColumn(8).setPreferredWidth(0);
 		bookDataTable.getColumnModel().getColumn(8).setWidth(0);
-		bookDataTable.getColumnModel().getColumn(9).setMaxWidth(0);
-		bookDataTable.getColumnModel().getColumn(9).setMinWidth(0);
-		bookDataTable.getColumnModel().getColumn(9).setPreferredWidth(0);
-		bookDataTable.getColumnModel().getColumn(9).setWidth(0);
-
 	}
 
 	private void createAndSetUpScrollPane() {
@@ -104,13 +92,13 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 
 		private static final long serialVersionUID = 3374415168258792612L;
 
-		private String[] columns = { "Book id", "Book title", "Book author", "Genre", "Publication", "Has got",
-				"Has read", "To get", "BooksInt", "UsersInt" };
+		private String[] columns = { "Book id", "Book title", "Book author", "Genre", "Publication year", "Has read",
+				"Has got", "To get", "UsersInt" };
 		private Object[][] bookData;
 
 		public BookDataTableModel() {
-			CompleteBookTable completeBookTable = new CompleteBookTable();
-			bookData = completeBookTable.getCompleteBookTable();
+			RetrieveData retrieveBookAndInteractions = new RetrieveBookAndInteractions();
+			bookData = retrieveBookAndInteractions.read();
 		}
 
 		@Override
@@ -128,6 +116,11 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 			return bookData[row][column];
 		}
 
+		public void setValueAt(Object value, int row, int column) {
+			bookData[row][column] = value;
+			fireTableCellUpdated(row, column);
+		}
+
 		public String getColumnName(int index) {
 			return columns[index];
 		}
@@ -141,11 +134,6 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 				return false;
 			}
 			return true;
-		}
-
-		public void setValueAt(Object value, int row, int column) {
-			bookData[row][column] = value;
-			fireTableCellUpdated(row, column);
 		}
 	}
 
@@ -165,104 +153,17 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 		Pattern patternForPlainText = Pattern.compile(plainTextPattern);
 		Pattern patternForYears = Pattern.compile(yearsPattern);
 
-		bookDataTableModel = new BookDataTableModel();
-
 		if (nameOfColumnForChangedData.equals("Book title") || nameOfColumnForChangedData.equals("Book author")
 				|| nameOfColumnForChangedData.equals("Genre")) {
 			matcher = patternForPlainText.matcher(changedDataToBeValidated);
 			if (!(matcher.matches())) {
-				modelForChangedData.setValueAt(bookDataTableModel.getValueAt(rowForChangedData, columnForChangedData),
-						rowForChangedData, columnForChangedData);
+				modelForChangedData.setValueAt("", rowForChangedData, columnForChangedData);
 			}
-		} else if (nameOfColumnForChangedData.equals("Publication")) {
+		} else if (nameOfColumnForChangedData.equals("Publication year")) {
 			matcher = patternForYears.matcher(changedDataToBeValidated);
 			if (!(matcher.matches())) {
-				modelForChangedData.setValueAt(bookDataTableModel.getValueAt(rowForChangedData, columnForChangedData),
-						rowForChangedData, columnForChangedData);
+				modelForChangedData.setValueAt(0, rowForChangedData, columnForChangedData);
 			}
 		}
-	}
-
-	class ReadAppListSelectionHandler implements ListSelectionListener {
-
-		ReadAppListSelectionHandler() {
-		}
-
-		@Override
-		public void valueChanged(ListSelectionEvent listEvent) {
-			ListSelectionModel currentSelectionModel = (ListSelectionModel) listEvent.getSource();
-			int lastSelectedRowIndex = currentSelectionModel.getMaxSelectionIndex();
-			bookIdForCurrentRow = (Integer) bookDataTable.getValueAt(lastSelectedRowIndex, 0);
-		}
-	}
-
-	public boolean checkIfBookDataChanged(Integer bookId) {
-
-		int currentBookIndexInModel = -1;
-		int currentBookIndexInTable = -1;
-		int rowCountModel = bookDataTableModel.getRowCount();
-		int rowCountTable = bookDataTable.getRowCount();
-
-		for (int i = 0, j = rowCountModel; i < j; i++) {
-			if (bookId.equals(bookDataTableModel.getValueAt(i, 0))) {
-				currentBookIndexInModel = i;
-			}
-		}
-
-		for (int i = 0, j = rowCountTable; i < j; i++) {
-			if (bookId.equals(bookDataTable.getValueAt(i, 0))) {
-				currentBookIndexInTable = i;
-			}
-		}
-
-		if (currentBookIndexInModel >= 0 && currentBookIndexInTable >= 0) {
-			for (int i = 1, j = 5; i < j; i++) {
-				if (!(bookDataTable.getValueAt(currentBookIndexInTable, i)
-						.equals(bookDataTableModel.getValueAt(currentBookIndexInModel, i)))) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean checkIfInteractionDataChanged(Integer bookId) {
-
-		int currentBookIndexInModel = -1;
-		int currentBookIndexInTable = -1;
-		int rowCountModel = bookDataTableModel.getRowCount();
-		int rowCountTable = bookDataTable.getRowCount();
-
-		for (int i = 0, j = rowCountModel; i < j; i++) {
-			if (bookId.equals(bookDataTableModel.getValueAt(i, 0))) {
-				currentBookIndexInModel = i;
-			}
-		}
-
-		for (int i = 0, j = rowCountTable; i < j; i++) {
-			if (bookId.equals(bookDataTable.getValueAt(i, 0))) {
-				currentBookIndexInTable = i;
-			}
-		}
-
-		/*
-		 * for (int i = 0, j = rowCountModel; i < j; i++) { if
-		 * (books.equals(bookDataTableModel.getValueAt(i, 8))) {
-		 * currentBookIndexInModel = i; } }
-		 * 
-		 * for (int i = 0, j = rowCountTable; i < j; i++) { if
-		 * (books.equals(bookDataTable.getValueAt(i, 8))) {
-		 * currentBookIndexInTable = i; } }
-		 */
-
-		if (currentBookIndexInModel >= 0 && currentBookIndexInTable >= 0) {
-			for (int i = 5, j = 8; i < j; i++) {
-				if (!(bookDataTable.getValueAt(currentBookIndexInTable, i)
-						.equals(bookDataTableModel.getValueAt(currentBookIndexInModel, i)))) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 }

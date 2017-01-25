@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import readingProject.Books;
 import readingProject.DeleteBookData;
 import readingProject.DeleteData;
 import readingProject.DeleteInteractionsData;
@@ -118,29 +117,24 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 				public void run() {
 					if (saveButton == (JButton) e.getSource()) {
 
-						boolean isBookDataChanged = true;
-						boolean isInteractionDataChanged = true;
+						boolean isDataChanged = true;
+						// TODO add a verification mechanism for isDataChanged
 
 						int numberOfRowsForCurrentTable = allMyBooks.getBookDataTable().getRowCount();
 						for (int i = 0, numberOfRows = numberOfRowsForCurrentTable; i < numberOfRows; i++) {
 
 							Integer bookId = (Integer) allMyBooks.getBookDataTable().getValueAt(i, 0);
-							isBookDataChanged = allMyBooks.checkIfBookDataChanged(bookId);
-							isInteractionDataChanged = allMyBooks.checkIfInteractionDataChanged(bookId);
+							Users users = (Users) allMyBooks.getBookDataTable().getValueAt(i, 8);
 
-							Books books = (Books) allMyBooks.getBookDataTable().getValueAt(i, 8);
-							Users users = (Users) allMyBooks.getBookDataTable().getValueAt(i, 9);
-
-							if (isInteractionDataChanged) {
-								boolean newHasGot = (boolean) allMyBooks.getBookDataTable().getValueAt(i, 5);
-								boolean newHasRead = (boolean) allMyBooks.getBookDataTable().getValueAt(i, 6);
+							if (isDataChanged) {
+								boolean newHasRead = (boolean) allMyBooks.getBookDataTable().getValueAt(i, 5);
+								boolean newHasGot = (boolean) allMyBooks.getBookDataTable().getValueAt(i, 6);
 								boolean newWantsToBuy = (boolean) allMyBooks.getBookDataTable().getValueAt(i, 7);
 
-								UpdateInteractionsData updateInteractionsData = new UpdateInteractionsData(books, users,
-										newHasGot, newHasRead, newWantsToBuy);
+								UpdateInteractionsData updateInteractionsData = new UpdateInteractionsData(bookId,
+										users, newHasRead, newHasGot, newWantsToBuy);
 								updateInteractionsData.updateData();
-							}
-							if (isBookDataChanged) {
+
 								String newBookTitle = (String) allMyBooks.getBookDataTable().getValueAt(i, 1);
 								String newBookAuthor = (String) allMyBooks.getBookDataTable().getValueAt(i, 2);
 								String newGenre = (String) allMyBooks.getBookDataTable().getValueAt(i, 3);
@@ -151,17 +145,17 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 								updateBookData.updateData();
 							}
 						}
-
-						if (isBookDataChanged || isInteractionDataChanged) {
-							isBookDataChanged = false;
-							isInteractionDataChanged = false;
+						
+						if (isDataChanged) {
+							isDataChanged = false;
 							DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
 							basicFrame.getContentPane().removeAll();
 							basicFrame.add(decisionPanel);
 							basicFrame.validate();
 						}
+						
 					} else if (deleteButton == (JButton) e.getSource()) {
-						bookIdForBookToBeDeleted = allMyBooks.getBookIdForCurrentRow();
+						bookIdForBookToBeDeleted = ReadAppListSelectionHandler.getBookIdForCurrentRow();
 						if (bookIdForBookToBeDeleted != null) {
 							DeleteData deleteInteractionsData = new DeleteInteractionsData();
 							deleteInteractionsData.delete(bookIdForBookToBeDeleted);
@@ -173,16 +167,16 @@ public class CheckingBookPanel extends JPanel implements ItemListener {
 							basicFrame.add(checkingBookPanel);
 							basicFrame.validate();
 						}
+						
 					} else if (returnButton == (JButton) e.getSource()) {
 						DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
 						basicFrame.getContentPane().removeAll();
 						basicFrame.add(decisionPanel);
 						basicFrame.validate();
 					}
-
 				}
+
 			});
 		}
 	}
-
 }

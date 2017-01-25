@@ -106,7 +106,6 @@ public class LoginPanel extends JPanel {
 						basicFrame.validate();
 					} else if (loginButton == e.getSource()) {
 						validateLoginData();
-						//isLoginDataCorrect = true;
 						if (isLoginDataCorrect == true) {
 							DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
 							basicFrame.getContentPane().removeAll();
@@ -125,6 +124,7 @@ public class LoginPanel extends JPanel {
 
 	private void validateLoginData() {
 		String userEmailToBeCompared = userEmail.getText();
+		// TODO implement MD5 algorithm for password
 		String passwordToBeCompared = new String(userPassword.getPassword());
 		CheckData checkUserLoginData = new CheckUserLoginData(userEmailToBeCompared, passwordToBeCompared);
 		userId = checkUserLoginData.check();

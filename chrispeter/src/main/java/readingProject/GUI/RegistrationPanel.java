@@ -134,6 +134,7 @@ public class RegistrationPanel extends JPanel {
 								userToBeAdded = new Users();
 								userToBeAdded.setUserName(userName.getText());
 								userToBeAdded.setEmail(userEmail.getText());
+								// TODO implement MD5 algorithm for password
 								userToBeAdded.setPassword(new String(userPassword.getPassword()));
 								userToBeAdded.setUserSince(userRegistrationDateTime);
 

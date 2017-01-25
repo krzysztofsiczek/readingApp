@@ -10,7 +10,7 @@
 		<property name="email" unique="true" type="java.lang.String">
 			<column name="EMAIL" />
 		</property>
-		<property name="password" length="30" type="java.lang.String">
+		<property name="password" length="255" type="java.lang.String">
 			<column name="PASSWORD" />
 		</property>
 		<property name="userSince" type="java.time.LocalDateTime">
