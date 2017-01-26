@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
+
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -20,6 +22,7 @@ import javax.swing.SwingUtilities;
 import readingProject.CheckData;
 import readingProject.CheckUserLoginData;
 import readingProject.UserInstance;
+import readingProject.Utilities.SHA256Hashing;
 
 public class LoginPanel extends JPanel {
 
@@ -105,7 +108,11 @@ public class LoginPanel extends JPanel {
 						basicFrame.add(registrationPanel);
 						basicFrame.validate();
 					} else if (loginButton == e.getSource()) {
-						validateLoginData();
+						try {
+							validateLoginData();
+						} catch (NoSuchAlgorithmException e1) {
+							e1.printStackTrace();
+						}
 						if (isLoginDataCorrect == true) {
 							DecisionPanel decisionPanel = new DecisionPanel(basicFrame);
 							basicFrame.getContentPane().removeAll();
@@ -122,10 +129,13 @@ public class LoginPanel extends JPanel {
 		}
 	}
 
-	private void validateLoginData() {
+	private void validateLoginData() throws NoSuchAlgorithmException {
 		String userEmailToBeCompared = userEmail.getText();
-		// TODO implement MD5 algorithm for password
-		String passwordToBeCompared = new String(userPassword.getPassword());
+		String passwordToBeComparedBeforeHashin = new String(userPassword.getPassword());
+
+		SHA256Hashing encryptionMechanism = new SHA256Hashing(passwordToBeComparedBeforeHashin);
+		String passwordToBeCompared = encryptionMechanism.encrypt();
+
 		CheckData checkUserLoginData = new CheckUserLoginData(userEmailToBeCompared, passwordToBeCompared);
 		userId = checkUserLoginData.check();
 		if (userId != null) {

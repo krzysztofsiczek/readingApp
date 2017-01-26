@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,7 +21,8 @@ import readingProject.CheckWhetherUserExists;
 import readingProject.StoreData;
 import readingProject.StoreUserData;
 import readingProject.Users;
-import readingProject.ZonedTime;
+import readingProject.Utilities.SHA256Hashing;
+import readingProject.Utilities.ZonedTime;
 
 public class RegistrationPanel extends JPanel {
 
@@ -131,11 +133,23 @@ public class RegistrationPanel extends JPanel {
 							} else {
 								ZonedTime zonedTime = new ZonedTime();
 								userRegistrationDateTime = zonedTime.checkCurrentDateTimeBeforePassingToDatabase();
+								
+								String passwordtoBeHashed = new String(userPassword.getPassword());
+								String hashedPassword = null;
+								
+								SHA256Hashing encryptionMechanism = new SHA256Hashing(passwordtoBeHashed);
+								
+								try {
+									hashedPassword = encryptionMechanism.encrypt();
+								} catch (NoSuchAlgorithmException e1) {
+									hashedPassword = new String(userPassword.getPassword());
+									e1.printStackTrace();
+								}
+								
 								userToBeAdded = new Users();
 								userToBeAdded.setUserName(userName.getText());
 								userToBeAdded.setEmail(userEmail.getText());
-								// TODO implement MD5 algorithm for password
-								userToBeAdded.setPassword(new String(userPassword.getPassword()));
+								userToBeAdded.setPassword(hashedPassword);
 								userToBeAdded.setUserSince(userRegistrationDateTime);
 
 								StoreData storeUserData = new StoreUserData(userToBeAdded);
