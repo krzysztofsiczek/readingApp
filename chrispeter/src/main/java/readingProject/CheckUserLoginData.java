@@ -40,6 +40,7 @@ public class CheckUserLoginData implements CheckData {
 		transaction = session.beginTransaction();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void checkUserLoginData() {
 		String checkingLoginData = "FROM Users WHERE email= :email AND password= :password";
 		Query<Users> query = session.createQuery(checkingLoginData);

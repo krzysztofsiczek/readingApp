@@ -39,6 +39,7 @@ public class RetrieveBookAndInteractions implements RetrieveData {
 		transaction = session.beginTransaction();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void retrieveDataFromDatabase() {
 		Integer userId = UserInstance.getUserId();
 		String checkingUsers = "From Users U WHERE U.userId= :userId";

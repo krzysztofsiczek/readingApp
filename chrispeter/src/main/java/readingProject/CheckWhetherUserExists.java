@@ -38,6 +38,7 @@ public class CheckWhetherUserExists implements CheckData {
 		transaction = session.beginTransaction();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void checkUserLoginData() {
 		String checkingWhetherUserExists = "FROM Users WHERE email= :email";
 		Query<Users> query = session.createQuery(checkingWhetherUserExists);

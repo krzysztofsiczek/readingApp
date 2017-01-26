@@ -51,6 +51,7 @@ public class UserInstance {
 		transaction = session.beginTransaction();
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void getUsers(Integer userId) {
 		String checkingUsers = "From Users U WHERE U.userId= :userId";
 		Query<Users> query = session.createQuery(checkingUsers);

@@ -34,21 +34,13 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 		createTable();
 		createAndSetUpScrollPane();
 	}
-
+	
 	public JTable getBookDataTable() {
 		return bookDataTable;
 	}
 
 	public void setBookDataTable(JTable bookDataTable) {
 		this.bookDataTable = bookDataTable;
-	}
-
-	public BookDataTableModel getBookDataTableModel() {
-		return bookDataTableModel;
-	}
-
-	public void setBookDataTable(BookDataTableModel bookDataTableModel) {
-		BookDataTablePanel.bookDataTableModel = bookDataTableModel;
 	}
 
 	private void createTable() {
@@ -132,7 +124,7 @@ public class BookDataTablePanel extends JPanel implements TableModelListener {
 		public boolean isCellEditable(int row, int column) {
 			if (column == 0 || column == 8 || column == 9) {
 				return false;
-			}
+			} 
 			return true;
 		}
 	}
